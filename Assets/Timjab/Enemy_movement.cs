@@ -6,20 +6,21 @@ using UnityEngine.UIElements;
 
 public class Enemy_movement : MonoBehaviour
 {
+    Vector2 PositionOfMovement = new Vector2(0, 0);
+    Vector2 playerPosition;
     [SerializeField]
     float maxX = 10;
     [SerializeField]
     float maxY = 4.5f;
     private void Awake()
     {
-        this.transform.position = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
+        PositionOfMovement = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
     }
     bool exceeded = false;
     bool moving = true;
+    float lifeTime = 0;
     bool Passive = true;
     Vector2 Position = Vector2.zero;
-    [SerializeField]
-    Vector2 PositionOfMovement = new Vector2(0, 0);
     [SerializeField]
     float slowingSpeed = 1;
     [SerializeField]
@@ -33,6 +34,7 @@ public class Enemy_movement : MonoBehaviour
     bool scalingMovement = false;
     void AttackThePlayer()
     {
+        lifeTime -= Time.deltaTime * 2;
         speed = 7.5f;
         PositionOfMovement = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         sAttacktime += Time.deltaTime * 1;
@@ -48,7 +50,7 @@ public class Enemy_movement : MonoBehaviour
         GameObject DemonChild = Instantiate(this.gameObject);
         DemonChild.transform.position = this.gameObject.transform.position;
     }
-    void Scare()
+    public void Scare()
     {
         lighted = true;
         Passive = true;
@@ -60,30 +62,38 @@ public class Enemy_movement : MonoBehaviour
         //after its done:
         Destroy(this.gameObject);
     }
+    public void Die()
+    {
+        Destroy(this.gameObject);
+    }
     void SwitchPassive()
     {
         Passive = !Passive;
     }
     void Update()
     {
-        Vector2 playerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        playerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Position = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
         if (!Passive) {
             AttackThePlayer();
         }
         else {
+            lifeTime -= 1 * Time.deltaTime;
             speed = 2;
             timePassed += Time.deltaTime * 1;
             if(timePassed > Random.Range(2,6))
             {
                 float probability = Random.Range(0.0f, 1.0f);
-                if (probability <= 1 / (1 + Vector2.Distance(playerPosition,this.gameObject.transform.position)) && Vector2.Distance(playerPosition,this.gameObject.transform.position) < 5) {
+                if (probability <= 1 / (1 + Vector2.Distance(playerPosition, this.gameObject.transform.position)) && Vector2.Distance(playerPosition, this.gameObject.transform.position) < 5) {
                     if (!lighted) { Passive = false; }
                 }
-                else if(Vector2.Distance(Position, PositionOfMovement) < 0.5)
+                else if (Vector2.Distance(Position, PositionOfMovement) < 0.5)
                 {
-                    Multiplicate();
                     PositionOfMovement = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
+                    if(probability < 0.25f)
+                    {
+                        Multiplicate();
+                    }
                 }
             }
         }
