@@ -9,7 +9,7 @@ public class ClueObject : MonoBehaviour
     
     public static List<GameObject> ClueObjects = null;
 
-    public static int? DontDeactivate = 2;
+    public static List<int> DontDeactivate = new(){2,10};
 
     public void Start()
     {
@@ -48,13 +48,13 @@ public class ClueObject : MonoBehaviour
     public static Dictionary<int, int> spawns
         = new()
         {
-            { 12, 0 },
             { 18, 1 },
             { 16, 1 },
             { 17, 1 },
             { 7, 2 },
             { 8, 2 },
-            { 15, 4 }
+            { 15, 2 },
+            { 12, 3 }
         };
 
     public static Dictionary<(int, int), int> recipesBase
@@ -65,7 +65,7 @@ public class ClueObject : MonoBehaviour
             { (9, 8), 7 },
             { (7, 13), 3 },
             { (15, 16), 14 },
-            { (14, 2), 3 },
+            { (14, 2), 13 },
             { (11, 12), 4 }
         };
 
@@ -85,7 +85,7 @@ public class ClueObject : MonoBehaviour
 
     public static void DeActivate(int id)
     {
-        if (DontDeactivate is not null && DontDeactivate.Value == id)
+        if (DontDeactivate is not null && DontDeactivate.Contains(id))
         {
             return;
         }
@@ -116,6 +116,17 @@ public class ClueObject : MonoBehaviour
         }
     }
 
+    public static bool FinalCheck(int id1, int id2)
+    {
+        if (id1 == 30)
+        {
+            PlayerCharacter.ShowDetails(30+id2);
+            return true;
+        }
+
+        return false;
+    }
+
     public static void MakeCreated(int id1, int id2)
     {
         var hs = new HashSet<int> { id1, id2 };
@@ -124,10 +135,18 @@ public class ClueObject : MonoBehaviour
             Camera.main.transform.GetChild(0).GetComponent<Lighter>().TurnIntoLighter();
             GameObject.FindGameObjectWithTag("GlobalLight").SetActive(false);
         }
+
+        var c1 = FinalCheck(id1, id2);
+        var c2 = FinalCheck(id2, id1);
+        if (c1 || c2)
+        {
+            return;
+        }
+
         print(string.Join(",",recipes.Select(x=> string.Join(",",x.Item1.Select(x=>x.ToString()).Append(x.Item2.ToString())))));
         print(string.Join(",",hs.Select(x=>x.ToString())));
-        var vs = recipes.Where(x => x.Item1.SetEquals(hs))
-            .Select((x, i) => (x, ind: i));
+        var vs = recipes.Select((x, i) => (x, ind: i)).Where(x => x.Item1.Item1.SetEquals(hs))
+            ;
         if (!vs.Any())
         {
             print("fail");
@@ -150,7 +169,10 @@ public class ClueObject : MonoBehaviour
             if (spawns.ContainsKey(id) && spawns[id] <= level)
             {
                 Activate(id);
-                spawns.Remove(id);
+                if (id != 10)
+                {
+                    spawns.Remove(id);
+                }
             }
         }
     }
