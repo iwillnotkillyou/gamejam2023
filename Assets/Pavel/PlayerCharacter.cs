@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -28,8 +27,7 @@ public class PlayerCharacter : MonoBehaviour
             .Where(x => x != null).ToList();
         print(currentCollisions1.Count);
         var currentCollisions = currentCollisions1
-            .Where(x =>
-                x.Distance(col).distance < 0.1)
+            .Where(x => x.Distance(col).distance < 0.1)
             .Select(x => x.gameObject).ToList();
         return currentCollisions;
     }
@@ -43,8 +41,7 @@ public class PlayerCharacter : MonoBehaviour
             .Where(x => x != null).ToList();
         print(currentCollisions1.Count);
         var currentCollisions = currentCollisions1
-            .Where(x =>
-                x.Distance(col).distance < 0.1)
+            .Where(x => x.Distance(col).distance < 0.1)
             .Select(x => x.gameObject).Where(x =>
                 x.GetComponent<ClueObject>() is not null).ToList();
         return currentCollisions;
@@ -84,26 +81,24 @@ public class PlayerCharacter : MonoBehaviour
                 c.SetParent(transform, true);
             }
         }
-
-        if (Input.GetMouseButtonDown(1))
+        else if (Input.GetMouseButtonDown(1) &&
+                 (transform.childCount > 0))
         {
-            if (transform.childCount > 0)
+            var c = transform.GetChild(0);
+            var cs = GetCollisions(c.GetComponent<Collider2D>())
+                .Where(x => x.transform != c);
+            if (cs.Any())
             {
-                var c = transform.GetChild(0);
-                var cs = GetCollisions(c.GetComponent<Collider2D>()).Where(x => x.transform != c);
-                if (cs.Any())
-                {
-                    var fo = cs.First().gameObject;
-                    var oId = fo.GetComponent<ClueObject>().ID;
-                    var id = transform.GetChild(0)
-                        .GetComponent<ClueObject>().ID;
-                    c.SetParent(null, true);
-                    ClueObject.MakeCreated(oId,id);
-                }
-                else
-                {
-                    c.SetParent(null, true);
-                }
+                var fo = cs.First().gameObject;
+                var oId = fo.GetComponent<ClueObject>().ID;
+                var id = transform.GetChild(0)
+                    .GetComponent<ClueObject>().ID;
+                c.SetParent(null, true);
+                ClueObject.MakeCreated(oId, id);
+            }
+            else
+            {
+                c.SetParent(null, true);
             }
         }
 

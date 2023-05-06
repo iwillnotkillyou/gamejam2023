@@ -9,8 +9,11 @@ public class ClueObject : MonoBehaviour
     
     public static List<GameObject> ClueObjects = null;
 
+    public static int? DontDeactivate = 0;
+
     public void Start()
     {
+        ID = int.Parse(name.Split('-').First());
         if (ClueObjects is null)
         {
             ClueObjects = GetClueObjects();
@@ -32,6 +35,7 @@ public class ClueObject : MonoBehaviour
 
     public static Vector2 Region = new(5, 5);
 
+    [HideInInspector]
     public int ID;
 
     public static bool Contains((int id1, int id2) ids, int id)
@@ -41,6 +45,11 @@ public class ClueObject : MonoBehaviour
 
     public static void DeActivate(int id)
     {
+        if (DontDeactivate is not null && DontDeactivate.Value == id)
+        {
+            return;
+        }
+
         //play appearing sound
         print($"removed {id}");
         var gos = ClueObjects;

@@ -6,16 +6,18 @@ public class CameraFollowPLayer : MonoBehaviour
 {
     public GameObject Player;
 
+    public float Velocity = 30;
+
     public void Update()
     {
         var target
-            = Player.transform.position;
+            = Player.transform.position + Vector3.left*2;
         var direction = (target - transform.position).normalized;
         var rigidbody = GetComponent<Rigidbody2D>();
         if (direction.magnitude > 0)
         {
             //rigidbody.AddForce(rigidbody.mass * (0.1f * direction));
-            rigidbody.velocity = 100 * new Vector2(direction.normalized.x,direction.normalized.y);
+            rigidbody.velocity = Velocity * new Vector2(direction.normalized.x,direction.normalized.y);
             Debug.DrawRay(transform.position, direction, Color.white);
         }
         else
