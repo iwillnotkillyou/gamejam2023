@@ -5,14 +5,25 @@ using UnityEngine;
 public interface ILightObject
 {
     public Vector3 Pos { get; }
-    public float Range { get; }
+
+    public bool Effects();
 }
 
 public class Lighter : MonoBehaviour, ILightObject
 {
+    public Sprite LighterSprite;
+    public ParticleSystem LighterLight;
+    public ParticleSystem LighterSparkles;
     private float buffDuration = 0;
+    private float buffCD = 0;
+    private int brokenHits = 0;
+    public bool Yeet;
+    public float YeetRadius = 1;
 
-    public float YeetRadius;
+    public void TurnIntoLighter()
+    {
+        GetComponent<SpriteRenderer>().sprite = LighterSprite;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,21 +34,41 @@ public class Lighter : MonoBehaviour, ILightObject
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(2))
+        buffCD -= Time.deltaTime;
+
+
+        if (Input.GetMouseButtonDown(1))
         {
-            YeetRadius = 1f;
+            if (buffCD < 0 && brokenHits <= 0)
+            {
+                //increase light
+                buffDuration = 2f;
+                buffCD = 5f;
+            }
+
+            if (brokenHits > 0)
+            {
+                brokenHits--;
+                //sound effect and spark effect
+            }
         }
 
         if (buffDuration > 0)
         {
+            //decrease light
             buffDuration -= Time.deltaTime;
         }
         else if (buffDuration <= 0)
         {
-            YeetRadius = 0.5f;
+            brokenHits = Mathf.Max(0,Random.Range(0, 10) - 5);
         }
     }
 
     public Vector3 Pos => transform.position;
     public float Range => YeetRadius;
+    public bool Effects()
+    {
+        var lDir = (Pos - transform.position);
+        return (lDir.magnitude < Range) && Yeet;
+    }
 }

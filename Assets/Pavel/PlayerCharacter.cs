@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -63,6 +65,25 @@ public class PlayerCharacter : MonoBehaviour
         return currentCollisions;
     }
 
+    private bool showingDetails = false;
+
+    private void HideDetails()
+    {
+        SceneManager.GetActiveScene().GetRootGameObjects()
+            .First(x => x.tag == "DetailCanvas").SetActive(false);
+    }
+
+    private void ShowDetals(int id)
+    {
+        var o = SceneManager.GetActiveScene().GetRootGameObjects()
+            .First(x => x.tag == "DetailCanvas");
+        if (o.GetComponent<DetailCanvas>().Ids.Contains(id))
+        {
+            o.SetActive(true);
+            o.GetComponent<DetailCanvas>().Show(id);
+        }
+    }
+
     // Update is called once per frame
     private void Update()
     {
@@ -81,9 +102,25 @@ public class PlayerCharacter : MonoBehaviour
                 c.SetParent(transform, true);
             }
         }
-        else if (Input.GetMouseButtonDown(1) &&
+        else if (Input.GetKeyDown(KeyCode.Space) &&
+                 transform.childCount > 0)
+        {
+            if (showingDetails)
+            {
+                HideDetails();
+            }
+            else
+            {
+                ShowDetals(transform.GetChild(0).GetComponent<ClueObject>().ID);
+            }
+        }
+        else if (Input.GetMouseButtonDown(0) &&
                  (transform.childCount > 0))
         {
+            if (showingDetails)
+            {
+                HideDetails();
+            }
             var c = transform.GetChild(0);
             var cs = GetCollisions(c.GetComponent<Collider2D>())
                 .Where(x => x.transform != c);

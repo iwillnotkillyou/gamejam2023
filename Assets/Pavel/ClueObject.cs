@@ -9,25 +9,52 @@ public class ClueObject : MonoBehaviour
     
     public static List<GameObject> ClueObjects = null;
 
-    public static int? DontDeactivate = 0;
+    public static int? DontDeactivate = 2;
 
     public void Start()
     {
-        ID = int.Parse(name.Split('-').First());
         if (ClueObjects is null)
         {
             ClueObjects = GetClueObjects();
+            List<int> starting = new List<int>() { 1,5,6 };
+            foreach (var n in starting)
+            {
+                Activate(n);
+            }
         }
     }
 
     public List<GameObject> GetClueObjects()
     {
-        return SceneManager.GetActiveScene().GetRootGameObjects()
-            .Where(x => x.tag == "ClueObject").ToList();
+        List<GameObject> r = new List<GameObject>();
+        var os = new List<Transform>();
+        foreach (Transform c in GameObject.FindGameObjectWithTag("Objects").transform)
+        {
+            os.Add(c);
+        }
+
+        foreach (var c in os)
+        {
+            c.SetParent(null,true);
+            c.GetComponent<ClueObject>().ID = int.Parse(c.name.Split('-').First());
+            r.Add(c.gameObject);
+            c.gameObject.SetActive(false);
+            c.transform.localScale = new Vector3(0.2f,0.2f,1);
+        }
+        return r;
     }
 
     public static Dictionary<(int, int), int> recipesBase
-        = new() { { (16, 17), 9 } };
+        = new()
+        {
+            { (5, 6), 2 },
+            { (18, 17), 9 },
+            { (9, 8), 7 },
+            { (7, 13), 3 },
+            { (15, 16), 14 },
+            { (14, 2), 3 },
+            { (11, 12), 4 }
+        };
 
     public static List<(HashSet<int>, int)> recipes = recipesBase
         .Select(x => (new HashSet<int> { x.Key.Item1, x.Key.Item2 },
@@ -72,6 +99,10 @@ public class ClueObject : MonoBehaviour
     public static void MakeCreated(int id1, int id2)
     {
         var hs = new HashSet<int> { id1, id2 };
+        if (hs.Contains(6))
+        {
+            Camera.main.transform.GetChild(0).GetComponent<Lighter>().TurnIntoLighter();
+        }
         print(string.Join(",",recipes.Select(x=> string.Join(",",x.Item1.Select(x=>x.ToString()).Append(x.Item2.ToString())))));
         print(string.Join(",",hs.Select(x=>x.ToString())));
         var vs = recipes.Where(x => x.Item1.SetEquals(hs))

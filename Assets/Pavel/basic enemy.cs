@@ -25,8 +25,7 @@ public class basicenemy : MonoBehaviour
     void Update()
     {
         var lDir = (Lighter.Pos - transform.position);
-        if (lDir.magnitude <
-            Lighter.Range)
+        if (Lighter.Effects())
         {
             GetComponent<Rigidbody2D>().velocity = lDir.normalized *
                 GetComponent<Rigidbody2D>().velocity.magnitude;
