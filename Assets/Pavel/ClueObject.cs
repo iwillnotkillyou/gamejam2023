@@ -44,6 +44,19 @@ public class ClueObject : MonoBehaviour
         return r;
     }
 
+    public static int level = 0;
+    public static Dictionary<int, int> spawns
+        = new()
+        {
+            { 12, 0 },
+            { 18, 1 },
+            { 16, 1 },
+            { 17, 1 },
+            { 7, 2 },
+            { 8, 2 },
+            { 15, 4 }
+        };
+
     public static Dictionary<(int, int), int> recipesBase
         = new()
         {
@@ -60,7 +73,7 @@ public class ClueObject : MonoBehaviour
         .Select(x => (new HashSet<int> { x.Key.Item1, x.Key.Item2 },
             x.Value)).ToList();
 
-    public static Vector2 Region = new(10, 10);
+    public static Vector2 Region = new(80, 40);
 
     [HideInInspector]
     public int ID;
@@ -76,22 +89,20 @@ public class ClueObject : MonoBehaviour
         {
             return;
         }
-
-        //play appearing sound
+        
         print($"removed {id}");
         var gos = ClueObjects;
         var o = gos.First(y => y.GetComponent<ClueObject>().ID == id);
         o.SetActive(false);
     }
 
-    public static void Activate(int id)
+    public static void Activate(int id, Vector3? poss = null)
     {
         print(id);
-        //play appearing sound
         var gos = ClueObjects;
         var o = gos.First(y => y.GetComponent<ClueObject>().ID == id);
 
-        o.transform.position = new Vector2(Random.Range(0, Region.x),
+        o.transform.position = poss ?? new Vector2(Random.Range(0, Region.x),
             Random.Range(0, Region.y));
         o.SetActive(true);
     }
@@ -116,15 +127,26 @@ public class ClueObject : MonoBehaviour
         }
 
         //play success sound
-
+        //play appearing sound
+        level++;
         var r = vs.First();
         recipes.RemoveAt(r.ind);
-        Activate(r.x.Item2);
+        Activate(r.x.Item2, GameObject.FindGameObjectWithTag("Player").transform.position);
         DeActivate(id1);
         DeActivate(id2);
-        var gos = GameObject.FindGameObjectsWithTag("ClueObject");
-        var activeIds = gos.Where(x => x.activeInHierarchy)
+        var inActiveIds = ClueObjects.Where(x => !x.activeInHierarchy)
             .Select(x => x.GetComponent<ClueObject>().ID).ToList();
+        foreach (var id in inActiveIds)
+        {
+            if (spawns.ContainsKey(id) && spawns[id] <= level)
+            {
+                Activate(id);
+            }
+        }
+    }
+
+    public static void F(List<int> activeIds)
+    {
         foreach (var x in recipes)
         {
             var first = x.Item1.First();

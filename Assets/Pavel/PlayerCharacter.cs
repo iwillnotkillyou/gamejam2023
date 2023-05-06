@@ -7,6 +7,9 @@ public class PlayerCharacter : MonoBehaviour
 {
     private readonly bool showingDetails = false;
 
+    public Sprite Grabbing;
+    public Sprite Normal;
+
     private List<GameObject> GetCollisionsEnemy()
     {
         var currentCollisions1 = SceneManager.GetActiveScene()
@@ -56,7 +59,6 @@ public class PlayerCharacter : MonoBehaviour
             .Where(x => x != gameObject)
             .Select(x => x.GetComponent<Collider2D>())
             .Where(x => x != null).ToList();
-        print(currentCollisions1.Count);
         var currentCollisions = currentCollisions1
             .Where(x =>
                 x.Distance(GetComponent<Collider2D>()).distance < 0.1)
@@ -89,15 +91,19 @@ public class PlayerCharacter : MonoBehaviour
             (transform.childCount == 0))
         {
             var currentCollisions = GetCollisions();
-            foreach (var gObject in currentCollisions)
-            {
-                print(gObject.name);
-            }
-
             if (currentCollisions.Any())
             {
                 var c = currentCollisions.First().transform;
-                c.SetParent(transform, true);
+                if (c.GetComponent<ClueObject>().ID == 10)
+                {
+                    c.gameObject.SetActive(false);
+                    ClueObject.Activate(11);
+                }
+                else
+                {
+                    c.SetParent(transform, true);
+                    GetComponent<SpriteRenderer>().sprite = Grabbing;
+                }
             }
         }
         else if (Input.GetKeyDown(KeyCode.Space) &&
@@ -137,6 +143,8 @@ public class PlayerCharacter : MonoBehaviour
             {
                 c.SetParent(null, true);
             }
+
+            GetComponent<SpriteRenderer>().sprite = Normal;
         }
 
         var target
