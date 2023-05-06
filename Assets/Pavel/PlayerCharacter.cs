@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerCharacter : MonoBehaviour
 {
+    private readonly bool showingDetails = false;
+
+    public Sprite Grabbing;
+    public Sprite Normal;
+
     private List<GameObject> GetCollisionsEnemy()
     {
         var currentCollisions1 = SceneManager.GetActiveScene()
@@ -56,7 +59,6 @@ public class PlayerCharacter : MonoBehaviour
             .Where(x => x != gameObject)
             .Select(x => x.GetComponent<Collider2D>())
             .Where(x => x != null).ToList();
-        print(currentCollisions1.Count);
         var currentCollisions = currentCollisions1
             .Where(x =>
                 x.Distance(GetComponent<Collider2D>()).distance < 0.1)
@@ -64,8 +66,6 @@ public class PlayerCharacter : MonoBehaviour
                 x.GetComponent<ClueObject>() is not null).ToList();
         return currentCollisions;
     }
-
-    private bool showingDetails = false;
 
     private void HideDetails()
     {
@@ -91,19 +91,23 @@ public class PlayerCharacter : MonoBehaviour
             (transform.childCount == 0))
         {
             var currentCollisions = GetCollisions();
-            foreach (var gObject in currentCollisions)
-            {
-                print(gObject.name);
-            }
-
             if (currentCollisions.Any())
             {
                 var c = currentCollisions.First().transform;
-                c.SetParent(transform, true);
+                if (c.GetComponent<ClueObject>().ID == 10)
+                {
+                    c.gameObject.SetActive(false);
+                    ClueObject.Activate(11);
+                }
+                else
+                {
+                    c.SetParent(transform, true);
+                    GetComponent<SpriteRenderer>().sprite = Grabbing;
+                }
             }
         }
         else if (Input.GetKeyDown(KeyCode.Space) &&
-                 transform.childCount > 0)
+                 (transform.childCount > 0))
         {
             if (showingDetails)
             {
@@ -111,7 +115,8 @@ public class PlayerCharacter : MonoBehaviour
             }
             else
             {
-                ShowDetals(transform.GetChild(0).GetComponent<ClueObject>().ID);
+                ShowDetals(transform.GetChild(0)
+                    .GetComponent<ClueObject>().ID);
             }
         }
         else if (Input.GetMouseButtonDown(0) &&
@@ -121,6 +126,7 @@ public class PlayerCharacter : MonoBehaviour
             {
                 HideDetails();
             }
+
             var c = transform.GetChild(0);
             var cs = GetCollisions(c.GetComponent<Collider2D>())
                 .Where(x => x.transform != c);
@@ -137,6 +143,8 @@ public class PlayerCharacter : MonoBehaviour
             {
                 c.SetParent(null, true);
             }
+
+            GetComponent<SpriteRenderer>().sprite = Normal;
         }
 
         var target
@@ -154,5 +162,10 @@ public class PlayerCharacter : MonoBehaviour
             rigidbody.velocity = Vector3.zero;
             rigidbody.Sleep();
         }
+
+        rigidbody.position = new Vector2(
+            Mathf.Clamp(rigidbody.position.x, 0, ClueObject.Region.x),
+            Mathf.Clamp(rigidbody.position.y, 0,
+                ClueObject.Region.y));
     }
 }
