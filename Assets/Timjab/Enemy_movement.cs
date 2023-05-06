@@ -6,14 +6,13 @@ using UnityEngine.UIElements;
 
 public class Enemy_movement : MonoBehaviour
 {
+    public ILightObject Lighter_;
     Vector2 PositionOfMovement = new Vector2(0, 0);
     Vector2 playerPosition;
     [SerializeField]
     public float maxX = 10;
     [SerializeField]
     public float maxY = 4.5f;
-    [SerializeField]
-    GameObject Children;
     private void Awake()
     {
         PositionOfMovement = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
@@ -74,12 +73,17 @@ public class Enemy_movement : MonoBehaviour
     }
     void Update()
     {
-        if(lifeTime < 0)
+        Position = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
+        if (Lighter.mainLighter.GetComponent<Lighter>().Effects() && Vector2.Distance(Position,Lighter.mainLighter.gameObject.transform.position) < 5)
+        {
+            Debug.Log("SCAAAAAAAAAARY");
+            Scare();
+        }
+        if (lifeTime < 0)
         {
             Destroy(this.gameObject);
         }
         playerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Position = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
         if (!Passive) {
             AttackThePlayer();
         }

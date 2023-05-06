@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public interface ILightObject
@@ -8,9 +9,9 @@ public interface ILightObject
 
     public bool Effects();
 }
-
 public class Lighter : MonoBehaviour, ILightObject
 {
+    public static GameObject mainLighter;
     public Sprite LighterSprite;
     private float buffDuration = 0;
     private float buffCD = 0;
@@ -26,14 +27,15 @@ public class Lighter : MonoBehaviour, ILightObject
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        mainLighter = gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
+
         buffCD -= Time.deltaTime;
 
 
@@ -68,7 +70,6 @@ public class Lighter : MonoBehaviour, ILightObject
     public float Range => YeetRadius;
     public bool Effects()
     {
-        var lDir = (Pos - transform.position);
-        return (lDir.magnitude < Range) && Yeet;
+        return buffDuration > 0;
     }
 }

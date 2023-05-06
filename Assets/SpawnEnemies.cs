@@ -12,7 +12,8 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField]
     GameObject basicDemon;
     [SerializeField]
-    List<float> speed = new List<float>(){5,3,3,2.5f,2};
+    List<float> speed;
+    public float spawnSpeed;
     float timer = 0;
     float spawnTime = 0;
     public void Decay()
@@ -44,25 +45,25 @@ public class SpawnEnemies : MonoBehaviour
                 spawnSpeed = speed[0];
                 //speed 1/4
                 //spawn 1 per 4-6 seconds
-                Spawn(spawnSpeed,1);
+                Spawn(5,1);
                 break;
             case 1:
                 spawnSpeed = speed[1];
                 //speed 2/4
                 //spawn 1 per
-                Spawn(spawnSpeed,1);
+                Spawn(3.5f,1);
                 break;
             case 2:
                 spawnSpeed = speed[2];
-                Spawn(spawnSpeed, 2);
+                Spawn(3.5f, 2);
                 break;
             case 3:
                 spawnSpeed = speed[3];
-                Spawn(spawnSpeed, 2);
+                Spawn(3f, 2);
                 break;
             case 4:
                 spawnSpeed = speed[4];
-                Spawn(spawnSpeed, 3);
+                Spawn(2, 3);
                 break;
             default:
                 break;
