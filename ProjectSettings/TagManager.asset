@@ -9,6 +9,7 @@ TagManager:
   - DetailCanvas
   - GlobalLight
   - Lighter
+  - Thoughts
   layers:
   - Default
   - TransparentFX

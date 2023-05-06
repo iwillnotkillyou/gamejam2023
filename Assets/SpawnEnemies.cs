@@ -9,11 +9,10 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField]
     float maxY = 0;
     int decayLevel = 0;
-    float spawnSpeed = 0;
     [SerializeField]
     GameObject basicDemon;
     [SerializeField]
-    List<float> speed;
+    List<float> speed = new List<float>(){5,3,3,2.5f,2};
     float timer = 0;
     float spawnTime = 0;
     public void Decay()
@@ -37,6 +36,7 @@ public class SpawnEnemies : MonoBehaviour
     }
     private void Update()
     {
+        float spawnSpeed = 0;
         timer += Time.deltaTime * 1;
         switch (decayLevel)
         {
@@ -44,25 +44,25 @@ public class SpawnEnemies : MonoBehaviour
                 spawnSpeed = speed[0];
                 //speed 1/4
                 //spawn 1 per 4-6 seconds
-                Spawn(5,1);
+                Spawn(spawnSpeed,1);
                 break;
             case 1:
                 spawnSpeed = speed[1];
                 //speed 2/4
                 //spawn 1 per
-                Spawn(3f,1);
+                Spawn(spawnSpeed,1);
                 break;
             case 2:
                 spawnSpeed = speed[2];
-                Spawn(3f, 2);
+                Spawn(spawnSpeed, 2);
                 break;
             case 3:
                 spawnSpeed = speed[3];
-                Spawn(2.5f, 2);
+                Spawn(spawnSpeed, 2);
                 break;
             case 4:
                 spawnSpeed = speed[4];
-                Spawn(2f, 3);
+                Spawn(spawnSpeed, 3);
                 break;
             default:
                 break;
