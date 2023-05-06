@@ -5840,6 +5840,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 5-dimcandle
       objectReference: {fileID: 0}
+    - target: {fileID: 6440411620504451, guid: da36ab1b296e8f344b8a13276c510b18, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6440411620504452, guid: da36ab1b296e8f344b8a13276c510b18, type: 3}
       propertyPath: m_Size.x
       value: 1
@@ -6928,7 +6932,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1988187446
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7021,11 +7025,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6440411620504448, guid: da36ab1b296e8f344b8a13276c510b18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.129631
+      value: -0.12963104
       objectReference: {fileID: 0}
     - target: {fileID: 6440411620504448, guid: da36ab1b296e8f344b8a13276c510b18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.47
+      value: -4.2827563
       objectReference: {fileID: 0}
     - target: {fileID: 6440411620504448, guid: da36ab1b296e8f344b8a13276c510b18, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7159,6 +7163,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 87fcc52310934484f98239570c3a77fb, type: 3}
+    - target: {fileID: 6440411620504452, guid: da36ab1b296e8f344b8a13276c510b18, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6440411620504455, guid: da36ab1b296e8f344b8a13276c510b18, type: 3}
       propertyPath: ID
       value: 9
