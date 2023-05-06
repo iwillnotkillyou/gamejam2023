@@ -12,8 +12,6 @@ public interface ILightObject
 public class Lighter : MonoBehaviour, ILightObject
 {
     public Sprite LighterSprite;
-    public ParticleSystem LighterLight;
-    public ParticleSystem LighterSparkles;
     private float buffDuration = 0;
     private float buffCD = 0;
     private int brokenHits = 0;
