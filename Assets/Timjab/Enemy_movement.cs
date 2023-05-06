@@ -9,22 +9,24 @@ public class Enemy_movement : MonoBehaviour
     Vector2 PositionOfMovement = new Vector2(0, 0);
     Vector2 playerPosition;
     [SerializeField]
-    float maxX = 10;
+    public float maxX = 10;
     [SerializeField]
-    float maxY = 4.5f;
+    public float maxY = 4.5f;
+    [SerializeField]
+    GameObject Children;
     private void Awake()
     {
         PositionOfMovement = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
     }
     bool exceeded = false;
     bool moving = true;
-    float lifeTime = 0;
+    float lifeTime = 10;
     bool Passive = true;
     Vector2 Position = Vector2.zero;
     [SerializeField]
     float slowingSpeed = 1;
     [SerializeField]
-    float speed = 2;
+    public float speed = 2;
     [SerializeField]
     float maxSpeed = 2;
     // Update is called once per frame
@@ -72,6 +74,10 @@ public class Enemy_movement : MonoBehaviour
     }
     void Update()
     {
+        if(lifeTime < 0)
+        {
+            Destroy(this.gameObject);
+        }
         playerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Position = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
         if (!Passive) {

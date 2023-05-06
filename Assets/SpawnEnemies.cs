@@ -29,9 +29,9 @@ public class SpawnEnemies : MonoBehaviour
         if (SpawnRate <= timer)
         {
             timer = 0;
-            for(int i = 0; i < SpawnAmount; i++) {
-                Debug.Log("spawning");
-                Instantiate(basicDemon,pos,Quaternion.identity);
+            for (int i = 0; i < SpawnAmount; i++) {
+                GameObject newBorn = Instantiate(basicDemon, pos, Quaternion.identity);
+                newBorn.GetComponent<Enemy_movement>().speed = spawnSpeed;
             }
         }
     }
