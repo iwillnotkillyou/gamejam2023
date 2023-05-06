@@ -60,7 +60,7 @@ public class ClueObject : MonoBehaviour
         .Select(x => (new HashSet<int> { x.Key.Item1, x.Key.Item2 },
             x.Value)).ToList();
 
-    public static Vector2 Region = new(5, 5);
+    public static Vector2 Region = new(10, 10);
 
     [HideInInspector]
     public int ID;
@@ -102,6 +102,7 @@ public class ClueObject : MonoBehaviour
         if (hs.Contains(6))
         {
             Camera.main.transform.GetChild(0).GetComponent<Lighter>().TurnIntoLighter();
+            GameObject.FindGameObjectWithTag("GlobalLight").SetActive(false);
         }
         print(string.Join(",",recipes.Select(x=> string.Join(",",x.Item1.Select(x=>x.ToString()).Append(x.Item2.ToString())))));
         print(string.Join(",",hs.Select(x=>x.ToString())));

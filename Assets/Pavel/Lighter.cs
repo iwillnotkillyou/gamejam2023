@@ -21,6 +21,8 @@ public class Lighter : MonoBehaviour, ILightObject
     public void TurnIntoLighter()
     {
         GetComponent<SpriteRenderer>().sprite = LighterSprite;
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(2).gameObject.SetActive(true);
     }
 
     // Start is called before the first frame update

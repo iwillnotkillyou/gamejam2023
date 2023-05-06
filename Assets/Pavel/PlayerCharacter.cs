@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerCharacter : MonoBehaviour
 {
+    private readonly bool showingDetails = false;
+
     private List<GameObject> GetCollisionsEnemy()
     {
         var currentCollisions1 = SceneManager.GetActiveScene()
@@ -65,8 +65,6 @@ public class PlayerCharacter : MonoBehaviour
         return currentCollisions;
     }
 
-    private bool showingDetails = false;
-
     private void HideDetails()
     {
         SceneManager.GetActiveScene().GetRootGameObjects()
@@ -103,7 +101,7 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
         else if (Input.GetKeyDown(KeyCode.Space) &&
-                 transform.childCount > 0)
+                 (transform.childCount > 0))
         {
             if (showingDetails)
             {
@@ -111,7 +109,8 @@ public class PlayerCharacter : MonoBehaviour
             }
             else
             {
-                ShowDetals(transform.GetChild(0).GetComponent<ClueObject>().ID);
+                ShowDetals(transform.GetChild(0)
+                    .GetComponent<ClueObject>().ID);
             }
         }
         else if (Input.GetMouseButtonDown(0) &&
@@ -121,6 +120,7 @@ public class PlayerCharacter : MonoBehaviour
             {
                 HideDetails();
             }
+
             var c = transform.GetChild(0);
             var cs = GetCollisions(c.GetComponent<Collider2D>())
                 .Where(x => x.transform != c);
@@ -154,5 +154,10 @@ public class PlayerCharacter : MonoBehaviour
             rigidbody.velocity = Vector3.zero;
             rigidbody.Sleep();
         }
+
+        rigidbody.position = new Vector2(
+            Mathf.Clamp(rigidbody.position.x, 0, ClueObject.Region.x),
+            Mathf.Clamp(rigidbody.position.y, 0,
+                ClueObject.Region.y));
     }
 }
