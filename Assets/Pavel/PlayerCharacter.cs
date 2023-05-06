@@ -37,10 +37,9 @@ public class PlayerCharacter : MonoBehaviour
         return currentCollisions;
     }
 
-    private static List<GameObject> GetCollisions(Collider2D col)
+    public static List<GameObject> GetCollisions(Collider2D col)
     {
-        var currentCollisions1 = GameObject
-            .FindGameObjectsWithTag("ClueObject")
+        var currentCollisions1 = ClueObject.ClueObjects.Where(x => x.activeInHierarchy)
             .Where(x => x != col.gameObject)
             .Select(x => x.GetComponent<Collider2D>())
             .Where(x => x != null).ToList();
@@ -54,8 +53,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private List<GameObject> GetCollisions()
     {
-        var currentCollisions1 = GameObject
-            .FindGameObjectsWithTag("ClueObject")
+        var currentCollisions1 = ClueObject.ClueObjects.Where(x => x.activeInHierarchy)
             .Where(x => x != gameObject)
             .Select(x => x.GetComponent<Collider2D>())
             .Where(x => x != null).ToList();
@@ -66,11 +64,20 @@ public class PlayerCharacter : MonoBehaviour
                 x.GetComponent<ClueObject>() is not null).ToList();
         return currentCollisions;
     }
+    
+    public static bool EndGame = false;
 
     private void HideDetails()
     {
-        SceneManager.GetActiveScene().GetRootGameObjects()
-            .First(x => x.tag == "DetailCanvas").SetActive(false);
+        if (!EndGame)
+        {
+            SceneManager.GetActiveScene().GetRootGameObjects()
+                .First(x => x.tag == "DetailCanvas").SetActive(false);
+        }
+        else
+        {
+            Application.Quit();
+        }
     }
 
     private void ShowDetals(int id)
@@ -84,9 +91,18 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
+    private static bool done = false;
+
     // Update is called once per frame
     private void Update()
     {
+        
+        if (Time.fixedTime > 1 && !done)
+        {
+            GameObject.FindGameObjectWithTag("DetailCanvas").SetActive(false);
+            done = true;
+        }
+
         if (Input.GetMouseButtonDown(0) &&
             (transform.childCount == 0))
         {

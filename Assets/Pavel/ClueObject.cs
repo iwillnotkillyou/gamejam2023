@@ -73,7 +73,7 @@ public class ClueObject : MonoBehaviour
         .Select(x => (new HashSet<int> { x.Key.Item1, x.Key.Item2 },
             x.Value)).ToList();
 
-    public static Vector2 Region = new(80, 40);
+    public static Vector2 Region = new(40, 30);
 
     [HideInInspector]
     public int ID;
@@ -105,6 +105,15 @@ public class ClueObject : MonoBehaviour
         o.transform.position = poss ?? new Vector2(Random.Range(0, Region.x),
             Random.Range(0, Region.y));
         o.SetActive(true);
+        if (poss is null)
+        {
+            int i = 0;
+            while (PlayerCharacter.GetCollisions(o.GetComponent<Collider2D>()).Any() && i < 10)
+            {
+                o.transform.position = new Vector2(Random.Range(0, Region.x), Random.Range(0, Region.y));
+                i++;
+            }
+        }
     }
 
     public static void MakeCreated(int id1, int id2)
@@ -141,6 +150,7 @@ public class ClueObject : MonoBehaviour
             if (spawns.ContainsKey(id) && spawns[id] <= level)
             {
                 Activate(id);
+                spawns.Remove(id);
             }
         }
     }
