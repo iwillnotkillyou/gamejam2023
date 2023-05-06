@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +19,37 @@ public class PlayerCharacter : MonoBehaviour
         return currentCollisions;
     }
 
+    public static List<GameObject> GetEnemies(Collider2D col)
+    {
+        var currentCollisions1 = GameObject
+            .FindGameObjectsWithTag("Enemy")
+            .Where(x => x != col.gameObject)
+            .Select(x => x.GetComponent<Collider2D>())
+            .Where(x => x != null).ToList();
+        print(currentCollisions1.Count);
+        var currentCollisions = currentCollisions1
+            .Where(x =>
+                x.Distance(col).distance < 0.1)
+            .Select(x => x.gameObject).ToList();
+        return currentCollisions;
+    }
+
+    private static List<GameObject> GetCollisions(Collider2D col)
+    {
+        var currentCollisions1 = GameObject
+            .FindGameObjectsWithTag("ClueObject")
+            .Where(x => x != col.gameObject)
+            .Select(x => x.GetComponent<Collider2D>())
+            .Where(x => x != null).ToList();
+        print(currentCollisions1.Count);
+        var currentCollisions = currentCollisions1
+            .Where(x =>
+                x.Distance(col).distance < 0.1)
+            .Select(x => x.gameObject).Where(x =>
+                x.GetComponent<ClueObject>() is not null).ToList();
+        return currentCollisions;
+    }
+
     private List<GameObject> GetCollisions()
     {
         var currentCollisions1 = GameObject
@@ -25,7 +57,7 @@ public class PlayerCharacter : MonoBehaviour
             .Where(x => x != gameObject)
             .Select(x => x.GetComponent<Collider2D>())
             .Where(x => x != null).ToList();
-        print(string.Join(",",currentCollisions1.Select(x=>x.name)));
+        print(currentCollisions1.Count);
         var currentCollisions = currentCollisions1
             .Where(x =>
                 x.Distance(GetComponent<Collider2D>()).distance < 0.1)
@@ -57,18 +89,19 @@ public class PlayerCharacter : MonoBehaviour
         {
             if (transform.childCount > 0)
             {
-                var cs = GetCollisions();
+                var c = transform.GetChild(0);
+                var cs = GetCollisions(c.GetComponent<Collider2D>()).Where(x => x.transform != c);
                 if (cs.Any())
                 {
                     var fo = cs.First().gameObject;
                     var oId = fo.GetComponent<ClueObject>().ID;
-                    ClueObject.MakeCreated(oId,
-                        transform.GetChild(0)
-                            .GetComponent<ClueObject>().ID);
+                    var id = transform.GetChild(0)
+                        .GetComponent<ClueObject>().ID;
+                    c.SetParent(null, true);
+                    ClueObject.MakeCreated(oId,id);
                 }
                 else
                 {
-                    var c = transform.GetChild(0);
                     c.SetParent(null, true);
                 }
             }

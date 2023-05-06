@@ -1,17 +1,36 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ClueObject : MonoBehaviour
 {
+    
+    public static List<GameObject> ClueObjects = null;
+
+    public void Start()
+    {
+        if (ClueObjects is null)
+        {
+            ClueObjects = GetClueObjects();
+        }
+    }
+
+    public List<GameObject> GetClueObjects()
+    {
+        return SceneManager.GetActiveScene().GetRootGameObjects()
+            .Where(x => x.tag == "ClueObject").ToList();
+    }
+
     public static Dictionary<(int, int), int> recipesBase
         = new() { { (16, 17), 9 } };
 
     public static List<(HashSet<int>, int)> recipes = recipesBase
-        .Select(x => (new HashSet<int> { x.Key.Item1, x.Key.Item1 },
+        .Select(x => (new HashSet<int> { x.Key.Item1, x.Key.Item2 },
             x.Value)).ToList();
 
-    public static Vector2 Region = new(20, 20);
+    public static Vector2 Region = new(5, 5);
 
     public int ID;
 
@@ -20,10 +39,20 @@ public class ClueObject : MonoBehaviour
         return (ids.id1 == id) && (ids.id2 == id);
     }
 
-    public static void Activate(int id)
+    public static void DeActivate(int id)
     {
         //play appearing sound
-        var gos = GameObject.FindGameObjectsWithTag("ClueObject");
+        print($"removed {id}");
+        var gos = ClueObjects;
+        var o = gos.First(y => y.GetComponent<ClueObject>().ID == id);
+        o.SetActive(false);
+    }
+
+    public static void Activate(int id)
+    {
+        print(id);
+        //play appearing sound
+        var gos = ClueObjects;
         var o = gos.First(y => y.GetComponent<ClueObject>().ID == id);
 
         o.transform.position = new Vector2(Random.Range(0, Region.x),
@@ -33,10 +62,14 @@ public class ClueObject : MonoBehaviour
 
     public static void MakeCreated(int id1, int id2)
     {
-        var hs = new HashSet<int>() { id1, id2 };
-        var vs = recipes.Where(x => x.Item1.SetEquals(hs)).Select((x,i) => (x,ind : i));
+        var hs = new HashSet<int> { id1, id2 };
+        print(string.Join(",",recipes.Select(x=> string.Join(",",x.Item1.Select(x=>x.ToString()).Append(x.Item2.ToString())))));
+        print(string.Join(",",hs.Select(x=>x.ToString())));
+        var vs = recipes.Where(x => x.Item1.SetEquals(hs))
+            .Select((x, i) => (x, ind: i));
         if (!vs.Any())
         {
+            print("fail");
             //fail sound
             return;
         }
@@ -46,6 +79,8 @@ public class ClueObject : MonoBehaviour
         var r = vs.First();
         recipes.RemoveAt(r.ind);
         Activate(r.x.Item2);
+        DeActivate(id1);
+        DeActivate(id2);
         var gos = GameObject.FindGameObjectsWithTag("ClueObject");
         var activeIds = gos.Where(x => x.activeInHierarchy)
             .Select(x => x.GetComponent<ClueObject>().ID).ToList();
