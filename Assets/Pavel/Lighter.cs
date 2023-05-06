@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public interface ILightObject
 {
@@ -41,7 +42,8 @@ public class Lighter : MonoBehaviour, ILightObject
         {
             if (buffCD < 0 && brokenHits <= 0)
             {
-                //increase light
+                transform.GetChild(2).gameObject
+                    .GetComponent<Light2D>().intensity = 2;
                 buffDuration = 2f;
                 buffCD = 5f;
             }
@@ -53,13 +55,20 @@ public class Lighter : MonoBehaviour, ILightObject
             }
         }
 
+        if (buffCD < 0)
+        {
+            transform.GetChild(2).gameObject
+                .GetComponent<Light2D>().intensity = 1f;
+        }
+
         if (buffDuration > 0)
         {
-            //decrease light
             buffDuration -= Time.deltaTime;
         }
         else if (buffDuration <= 0)
         {
+            transform.GetChild(2).gameObject
+                .GetComponent<Light2D>().intensity = 0.5f;
             brokenHits = Mathf.Max(0,Random.Range(0, 10) - 5);
         }
     }

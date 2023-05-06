@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    private readonly bool showingDetails = false;
+    private static bool showingDetails = false;
 
     public Sprite Grabbing;
     public Sprite Normal;
@@ -67,7 +67,7 @@ public class PlayerCharacter : MonoBehaviour
     
     public static bool EndGame = false;
 
-    private void HideDetails()
+    private static void HideDetails()
     {
         if (!EndGame)
         {
@@ -80,8 +80,9 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    private void ShowDetals(int id)
+    public static void ShowDetails(int id)
     {
+        showingDetails = true;
         var o = SceneManager.GetActiveScene().GetRootGameObjects()
             .First(x => x.tag == "DetailCanvas");
         if (o.GetComponent<DetailCanvas>().Ids.Contains(id))
@@ -93,16 +94,48 @@ public class PlayerCharacter : MonoBehaviour
 
     private static bool done = false;
 
+    private void Start()
+    {
+        ShowDetails(-1);
+        Time.timeScale = 0f;
+    }
+
+    private void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (showingDetails)
+            {
+                HideDetails();
+                Time.timeScale = 1f;
+            }
+            else
+            {
+                ShowDetails(-1);
+                Time.timeScale = 0f;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) &&
+            (transform.childCount > 0))
+        {
+            if (showingDetails)
+            {
+                HideDetails();
+                Time.timeScale = 1f;
+            }
+            else
+            {
+                ShowDetails(transform.GetChild(0)
+                    .GetComponent<ClueObject>().ID);
+                Time.timeScale = 0f;
+            }
+        }
+    }
+
     // Update is called once per frame
     private void Update()
     {
-        
-        if (Time.fixedTime > 1 && !done)
-        {
-            GameObject.FindGameObjectWithTag("DetailCanvas").SetActive(false);
-            done = true;
-        }
-
         if (Input.GetMouseButtonDown(0) &&
             (transform.childCount == 0))
         {
@@ -110,7 +143,7 @@ public class PlayerCharacter : MonoBehaviour
             if (currentCollisions.Any())
             {
                 var c = currentCollisions.First().transform;
-                if (c.GetComponent<ClueObject>().ID == 10)
+                if (c.GetComponent<ClueObject>().ID == 10 && ClueObject.level >= 3)
                 {
                     c.gameObject.SetActive(false);
                     ClueObject.Activate(11);
@@ -119,30 +152,13 @@ public class PlayerCharacter : MonoBehaviour
                 {
                     c.SetParent(transform, true);
                     GetComponent<SpriteRenderer>().sprite = Grabbing;
+                    c.position += Vector3.back * 1;
                 }
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Space) &&
-                 (transform.childCount > 0))
-        {
-            if (showingDetails)
-            {
-                HideDetails();
-            }
-            else
-            {
-                ShowDetals(transform.GetChild(0)
-                    .GetComponent<ClueObject>().ID);
             }
         }
         else if (Input.GetMouseButtonDown(0) &&
                  (transform.childCount > 0))
         {
-            if (showingDetails)
-            {
-                HideDetails();
-            }
-
             var c = transform.GetChild(0);
             var cs = GetCollisions(c.GetComponent<Collider2D>())
                 .Where(x => x.transform != c);
@@ -160,6 +176,7 @@ public class PlayerCharacter : MonoBehaviour
                 c.SetParent(null, true);
             }
 
+            c.position -= Vector3.back*1;
             GetComponent<SpriteRenderer>().sprite = Normal;
         }
 
