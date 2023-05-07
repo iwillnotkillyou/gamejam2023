@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3659799491965668949}
   m_Layer: 0
   m_Name: Pursuer
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxX: 10
   maxY: 4.5
-  Children: {fileID: 3659799491965668905}
   slowingSpeed: 1
   speed: 2
   maxSpeed: 2
