@@ -4991,9 +4991,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   List:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 355020834147198798}
+  - {fileID: 4107570473243815983}
+  - {fileID: 4107570473809943315}
 --- !u!1 &4107570473243815983
 GameObject:
   m_ObjectHideFlags: 0
