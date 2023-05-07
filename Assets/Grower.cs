@@ -26,7 +26,7 @@ public class Grower : MonoBehaviour
         this.gameObject.transform.localScale = new Vector3(1, 1, 1) * lifeTime / maximumLifetime;  
         if(lifeTime < maximumLifetime)
         {
-            lifeTime += speed * Time.deltaTime;
+            lifeTime += speed * Time.fixedDeltaTime;
         }
         else
         {
@@ -70,7 +70,7 @@ public class Grower : MonoBehaviour
         }
         if(Vector2.Distance(CandleInformer.CandleLocation,gameObject.transform.position) < 4.5f)
         {
-            lifeTime -= Time.deltaTime * 5;
+            lifeTime -= Time.fixedDeltaTime * 5;
             if(lifeTime < 4) { Instantiate(Death,this.gameObject.transform.position,Quaternion.identity); Destroy(gameObject); }
         }
     }

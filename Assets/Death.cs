@@ -23,9 +23,9 @@ public class Death : MonoBehaviour
             ball.transform.GetComponent<Rigidbody2D>().velocity += new Vector2(xSpawn,ySpawn) * 2;
         }
     }
-    private void FixedUpdate()
+    private void Update()
     {
-        lifetime -= 0.25f * Time.deltaTime; 
+        lifetime -= 0.25f * Time.fixedDeltaTime; 
         foreach (var item in List)
         {
             Color tmp = item.gameObject.GetComponent<SpriteRenderer>().color;
