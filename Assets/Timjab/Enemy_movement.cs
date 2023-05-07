@@ -52,7 +52,7 @@ public class Enemy_movement : MonoBehaviour
     }
     public void Scare()
     {
-        lifeTime -= 5;
+        lifeTime -= 2;
         lighted = true;
         Passive = true;
         PositionOfMovement = (-1)*PositionOfMovement; 
@@ -78,7 +78,7 @@ public class Enemy_movement : MonoBehaviour
         }
         if (Vector2.Distance(Position, CandleInformer.CandleLocation) < 3)
         {
-            Instantiate(Death,this.gameObject.transform.position,Quaternion.identity); Destroy(gameObject);
+            lifeTime -= 5 * Time.fixedDeltaTime;
         }
         else if(Vector2.Distance(Position,CandleInformer.CandleLocation) < 5) {
             Scare();
