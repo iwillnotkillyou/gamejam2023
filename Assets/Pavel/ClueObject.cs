@@ -97,7 +97,8 @@ public class ClueObject : MonoBehaviour
             { (7, 13), 3 },
             { (15, 16), 14 },
             { (14, 2), 13 },
-            { (11, 12), 4 }
+            { (11, 12), 4 },
+            { (21, 23), 22 }
         };
 
     public static List<(HashSet<int>, int)> recipes;
