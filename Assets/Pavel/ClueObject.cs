@@ -207,12 +207,15 @@ public class ClueObject : MonoBehaviour
         if (!vs.Any())
         {
             print("fail");
-            //fail sound
+            PlayerCharacter.player.transform.GetChild(0).GetChild(2).GetComponent<AudioSource>().Play();
+            CommentController.main.Show(-1);
             return;
         }
 
-        //play success sound
-        //play appearing sound
+        PlayerCharacter.player.transform.GetChild(0).GetChild(0).GetComponent<AudioSource>().Play();
+        PlayerCharacter.player.transform.GetChild(0).GetChild(1).GetComponent<ParticleSystem>().Play();
+        CommentController.main.Show(-2);
+
         level++;
         print(level);
         if (level == 4)
