@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnEnemies : MonoBehaviour
 {
-
+    public static GameObject mainSpawner;
     public GameObject Death;
     float maxX = 30;
     float maxY = 20;
