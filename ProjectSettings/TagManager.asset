@@ -10,6 +10,8 @@ TagManager:
   - GlobalLight
   - Lighter
   - Thoughts
+  - Enemy
+  - Table
   layers:
   - Default
   - TransparentFX

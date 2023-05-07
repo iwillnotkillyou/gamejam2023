@@ -9,10 +9,9 @@ public class Enemy_movement : MonoBehaviour
     public ILightObject Lighter_;
     Vector2 PositionOfMovement = new Vector2(0, 0);
     Vector2 playerPosition;
-    [SerializeField]
     public float maxX = 10;
-    [SerializeField]
     public float maxY = 4.5f;
+    public GameObject Death;
     private void Awake()
     {
         PositionOfMovement = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
@@ -35,10 +34,10 @@ public class Enemy_movement : MonoBehaviour
     bool scalingMovement = false;
     void AttackThePlayer()
     {
-        lifeTime -= Time.deltaTime * 2;
+        lifeTime -= Time.fixedDeltaTime * 0.5f;
         speed = 7.5f;
-        PositionOfMovement = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        sAttacktime += Time.deltaTime * 1;
+        PositionOfMovement = Lighter.mainLighter.transform.position;
+        sAttacktime += Time.fixedDeltaTime * 1;
         if(sAttacktime >= Random.Range(5,20))
         {
             sAttacktime = 0;
@@ -53,26 +52,21 @@ public class Enemy_movement : MonoBehaviour
     }
     public void Scare()
     {
-        lifeTime -= 5;
+        lifeTime -= 2;
         lighted = true;
         Passive = true;
         PositionOfMovement = (-1)*PositionOfMovement; 
     }
-    private void OnDestroy()
-    {
-        //animation and sound
-        //after its done:
-        Destroy(this.gameObject);
-    }
     public void Die()
     {
+        Instantiate(Death,this.gameObject.transform.position,Quaternion.identity);
         Destroy(this.gameObject);
     }
     void SwitchPassive()
     {
         Passive = !Passive;
     }
-    void Update()
+    void FixedUpdate()
     {
         Color tmp = gameObject.GetComponent<SpriteRenderer>().color;
         tmp.a = lifeTime/15 + 0.2f;
@@ -82,25 +76,25 @@ public class Enemy_movement : MonoBehaviour
         {
             Scare();
         }
-        if (Vector2.Distance(Position, CandleInformer.CandleLocation) < 5)
+        if (Vector2.Distance(Position, CandleInformer.CandleLocation) < 3)
         {
-            Destroy(gameObject);
+            lifeTime -= 5 * Time.fixedDeltaTime;
         }
-        else if(Vector2.Distance(Position,CandleInformer.CandleLocation) < 8) {
+        else if(Vector2.Distance(Position,CandleInformer.CandleLocation) < 5) {
             Scare();
         }
         if (lifeTime < 0)
         {
-            Destroy(this.gameObject);
+            lifeTime -= Time.fixedDeltaTime * 1;
         }
-        playerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        playerPosition = Lighter.mainLighter.transform.position;
         if (!Passive) {
             AttackThePlayer();
         }
         else {
-            lifeTime -= 1 * Time.deltaTime;
+            lifeTime -= 0.25f * Time.fixedDeltaTime;
             speed = 2;
-            timePassed += Time.deltaTime * 1;
+            timePassed += Time.fixedDeltaTime * 1;
             if(timePassed > Random.Range(2,6))
             {
                 lighted = false;
@@ -132,7 +126,7 @@ public class Enemy_movement : MonoBehaviour
     {
         if (scalingMovement) {
             Vector2 movementVector = PositionOfMovement - Position;
-            this.gameObject.GetComponent<Rigidbody2D>().velocity += speed * Time.deltaTime * movementVector.normalized;  
+            this.gameObject.GetComponent<Rigidbody2D>().velocity += speed * Time.fixedDeltaTime * movementVector.normalized;  
             
             if(exceeded)
             {
@@ -157,6 +151,6 @@ public class Enemy_movement : MonoBehaviour
     }
     void SlowDown()
     {
-            this.gameObject.GetComponent<Rigidbody2D>().velocity += -speed * Time.deltaTime * this.gameObject.GetComponent<Rigidbody2D>().velocity.normalized;
+            this.gameObject.GetComponent<Rigidbody2D>().velocity += -speed * Time.fixedDeltaTime * this.gameObject.GetComponent<Rigidbody2D>().velocity.normalized;
     }
 }

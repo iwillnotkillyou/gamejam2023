@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SpawnEnemies : MonoBehaviour
 {
-    [SerializeField]
+    public static GameObject mainSpawner;
+    public GameObject Death;
     float maxX = 30;
-    [SerializeField]
     float maxY = 20;
     int decayLevel = 0;
     [SerializeField]
@@ -14,8 +14,17 @@ public class SpawnEnemies : MonoBehaviour
     [SerializeField]
     List<float> speed;
     public float spawnSpeed;
+    GameObject Table;
     float timer = 0;
     float spawnTime = 0;
+    private void Awake()
+    {
+        mainSpawner = this.gameObject;
+        gameObject.SetActive(false);
+        Table = GameObject.FindGameObjectsWithTag("Table")[0];
+        maxX = Table.GetComponent<SpriteRenderer>().bounds.size.x;
+        maxY = Table.GetComponent<SpriteRenderer>().bounds.size.y;
+    }
     public void Decay()
     {
         decayLevel++;
@@ -30,10 +39,18 @@ public class SpawnEnemies : MonoBehaviour
         {
             timer = 0;
             for (int i = 0; i < SpawnAmount; i++) {
-                if(Random.Range(0,100) > 85) { GameObject newBorn = Instantiate(demons[0], pos, Quaternion.identity); } 
+                if(Random.Range(0,100) > 85) { GameObject newBorn = Instantiate(demons[0], pos, Quaternion.identity);
+                    newBorn.gameObject.GetComponent<Grower>().speed = spawnSpeed;
+                    newBorn.gameObject.GetComponent<Grower>().maxX = maxX;
+                    newBorn.gameObject.GetComponent<Grower>().maxY = maxY;
+                    newBorn.gameObject.GetComponent<Grower>().Death = Death;
+                } 
                 else {
                     GameObject newBorn = Instantiate(demons[1], pos, Quaternion.identity);
                     newBorn.GetComponent<Enemy_movement>().speed = spawnSpeed;
+                    newBorn.gameObject.GetComponent<Enemy_movement>().maxX = maxX;
+                    newBorn.gameObject.GetComponent<Enemy_movement>().maxY = maxY;
+                    newBorn.gameObject.GetComponent<Enemy_movement>().Death = Death;
                 }
             }
         }
@@ -41,7 +58,7 @@ public class SpawnEnemies : MonoBehaviour
     private void Update()
     {
         float spawnSpeed = 0;
-        timer += Time.deltaTime * 1;
+        timer += Time.fixedDeltaTime * 1;
         switch (decayLevel)
         {
             case 0:
