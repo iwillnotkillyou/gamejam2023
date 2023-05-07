@@ -9,10 +9,9 @@ public class Enemy_movement : MonoBehaviour
     public ILightObject Lighter_;
     Vector2 PositionOfMovement = new Vector2(0, 0);
     Vector2 playerPosition;
-    [SerializeField]
     public float maxX = 10;
-    [SerializeField]
     public float maxY = 4.5f;
+    public GameObject Death;
     private void Awake()
     {
         PositionOfMovement = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
@@ -35,7 +34,7 @@ public class Enemy_movement : MonoBehaviour
     bool scalingMovement = false;
     void AttackThePlayer()
     {
-        lifeTime -= Time.deltaTime * 2;
+        lifeTime -= Time.deltaTime * 0.5f;
         speed = 7.5f;
         PositionOfMovement = Lighter.mainLighter.transform.position;
         sAttacktime += Time.deltaTime * 1;
@@ -58,21 +57,16 @@ public class Enemy_movement : MonoBehaviour
         Passive = true;
         PositionOfMovement = (-1)*PositionOfMovement; 
     }
-    private void OnDestroy()
-    {
-        //animation and sound
-        //after its done:
-        Destroy(this.gameObject);
-    }
     public void Die()
     {
+        Instantiate(Death,this.gameObject.transform.position,Quaternion.identity);
         Destroy(this.gameObject);
     }
     void SwitchPassive()
     {
         Passive = !Passive;
     }
-    void Update()
+    void FixedUpdate()
     {
         Color tmp = gameObject.GetComponent<SpriteRenderer>().color;
         tmp.a = lifeTime/15 + 0.2f;
@@ -82,23 +76,23 @@ public class Enemy_movement : MonoBehaviour
         {
             Scare();
         }
-        if (Vector2.Distance(Position, CandleInformer.CandleLocation) < 5)
+        if (Vector2.Distance(Position, CandleInformer.CandleLocation) < 3)
         {
-            Destroy(gameObject);
+            Instantiate(Death,this.gameObject.transform.position,Quaternion.identity); Destroy(gameObject);
         }
-        else if(Vector2.Distance(Position,CandleInformer.CandleLocation) < 8) {
+        else if(Vector2.Distance(Position,CandleInformer.CandleLocation) < 5) {
             Scare();
         }
         if (lifeTime < 0)
         {
-            Destroy(this.gameObject);
+            lifeTime -= Time.deltaTime * 1;
         }
         playerPosition = Lighter.mainLighter.transform.position;
         if (!Passive) {
             AttackThePlayer();
         }
         else {
-            lifeTime -= 1 * Time.deltaTime;
+            lifeTime -= 0.25f * Time.deltaTime;
             speed = 2;
             timePassed += Time.deltaTime * 1;
             if(timePassed > Random.Range(2,6))

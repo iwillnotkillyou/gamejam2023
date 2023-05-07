@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxX: 10
   maxY: 4.5
+  Death: {fileID: 7301254602904167221, guid: cf58c164613418943a5ec22f389ffc8c, type: 3}
   slowingSpeed: 1
   speed: 2
   maxSpeed: 2

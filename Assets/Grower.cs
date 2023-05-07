@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class Grower : MonoBehaviour
 {
-    float maxX = 0;
-    float maxY = 0;
+    public float maxX = 0;
+    public float maxY = 0;
     bool grown = false;
     float lifeTime = 0;
     float maximumLifetime;
+    public float speed = 0;
+    public GameObject Death;
     private void Awake()
     {
         if(GetEnemies(this.gameObject.GetComponent<Collider2D>()).Count > 0)
@@ -19,12 +21,12 @@ public class Grower : MonoBehaviour
         maximumLifetime = Random.Range(5,10);
         this.gameObject.transform.localScale = new Vector3(0.001f, 0.001f);
     }
-    private void Update()
+    private void FixedUpdate()
     {
         this.gameObject.transform.localScale = new Vector3(1, 1, 1) * lifeTime / maximumLifetime;  
         if(lifeTime < maximumLifetime)
         {
-            lifeTime += 1 * Time.deltaTime;
+            lifeTime += speed * Time.deltaTime;
         }
         else
         {
@@ -66,10 +68,10 @@ public class Grower : MonoBehaviour
                 }
             }
         }
-        if(Vector2.Distance(CandleInformer.CandleLocation,gameObject.transform.position) < 5)
+        if(Vector2.Distance(CandleInformer.CandleLocation,gameObject.transform.position) < 4.5f)
         {
             lifeTime -= Time.deltaTime * 5;
-            if(lifeTime < 4) { Destroy(gameObject); }
+            if(lifeTime < 4) { Instantiate(Death,this.gameObject.transform.position,Quaternion.identity); Destroy(gameObject); }
         }
     }
     public static List<GameObject> GetEnemies(Collider2D col)
