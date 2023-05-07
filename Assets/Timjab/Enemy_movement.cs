@@ -57,7 +57,6 @@ public class Enemy_movement : MonoBehaviour
     }
     public void Die()
     {
-        Instantiate(Death,this.gameObject.transform.position,Quaternion.identity);
         Destroy(this.gameObject);
     }
     void SwitchPassive()
@@ -74,9 +73,10 @@ public class Enemy_movement : MonoBehaviour
         {
             Scare();
         }
-        else if (Vector2.Distance(Lighter.mainLighter.gameObject.transform.position,Position) < 0.001f && !lighted)
+        else if (Vector2.Distance(Lighter.mainLighter.gameObject.transform.position,Position) < 0.1f && !lighted)
         {
             CandleInformer.DamagePlayer(0.05f);
+            Instantiate(Death, this.gameObject.transform.position, Quaternion.identity);
             Die();
         }
 

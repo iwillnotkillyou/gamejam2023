@@ -49,7 +49,7 @@ public class SpawnEnemies : MonoBehaviour
             }
         }
     }
-    private void Update()
+    private void FixedUpdate()
     {
         float spawnSpeed = 0;
         timer += Time.fixedDeltaTime * 1;
@@ -59,25 +59,25 @@ public class SpawnEnemies : MonoBehaviour
                 spawnSpeed = speed[0];
                 //speed 1/4
                 //spawn 1 per 4-6 seconds
-                Spawn(5,1);
+                Spawn(100,1);
                 break;
             case 1:
                 spawnSpeed = speed[1];
                 //speed 2/4
                 //spawn 1 per
-                Spawn(3.5f,1);
+                Spawn(20,1);
                 break;
             case 2:
                 spawnSpeed = speed[2];
-                Spawn(3.5f, 2);
+                Spawn(15, 2);
                 break;
             case 3:
                 spawnSpeed = speed[3];
-                Spawn(3f, 2);
+                Spawn(10, 2);
                 break;
             case 4:
                 spawnSpeed = speed[4];
-                Spawn(2, 3);
+                Spawn(10, 5);
                 break;
             default:
                 break;
