@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -41,37 +42,48 @@ public class Grower : MonoBehaviour
                 SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
                 List<Vector2> positions = new List<Vector2>();
                 //Right
-                if (gameObject.transform.position.x + sr.bounds.size.x/2 + 0.25f < maxX) { positions.Add(gameObject.transform.position + new Vector3(sr.bounds.size.x / 2 + 0.25f,0)); }
+                if (gameObject.transform.position.x + sr.bounds.size.x/2 + 0.1f < maxX) { positions.Add(gameObject.transform.position + new Vector3(sr.bounds.size.x / 2 + 0.1f,0)); }
                 //Left
-                if (gameObject.transform.position.x - sr.bounds.size.x / 2 - 0.25f > 0) { positions.Add(gameObject.transform.position + new Vector3(-sr.bounds.size.x / 2 - 0.25f, 0)); }
+                if (gameObject.transform.position.x - sr.bounds.size.x / 2 - 0.1f > 0) { positions.Add(gameObject.transform.position + new Vector3(-sr.bounds.size.x / 2 - 0.1f, 0)); }
                 //Top
-                if (gameObject.transform.position.y + sr.bounds.size.y / 2 + 0.25f < maxY) { positions.Add(gameObject.transform.position + new Vector3(0, sr.bounds.size.y / 2 + 0.25f)); }
+                if (gameObject.transform.position.y + sr.bounds.size.y / 2 + 0.1f < maxY) { positions.Add(gameObject.transform.position + new Vector3(0, sr.bounds.size.y / 2 + 0.1f)); }
                 //Bottom
-                if (gameObject.transform.position.y - sr.bounds.size.y / 2 - 0.25f > 0) { positions.Add(gameObject.transform.position + new Vector3(0, -sr.bounds.size.y / 2 - 0.25f)); }
+                if (gameObject.transform.position.y - sr.bounds.size.y / 2 - 0.1f > 0) { positions.Add(gameObject.transform.position + new Vector3(0, -sr.bounds.size.y / 2 - 0.1f)); }
                 //TopRight
-                if (gameObject.transform.position.x + sr.bounds.size.x / 2 + 0.25f < maxX && gameObject.transform.position.y + sr.bounds.size.y / 2 + 0.25f < maxY) {
-                    positions.Add(gameObject.transform.position + new Vector3(sr.bounds.size.x / 2 + 0.25f, sr.bounds.size.y / 2 + 0.25f));
+                if (gameObject.transform.position.x + sr.bounds.size.x / 2 + 0.1f < maxX && gameObject.transform.position.y + sr.bounds.size.y / 2 + 0.1f < maxY) {
+                    positions.Add(gameObject.transform.position + new Vector3(sr.bounds.size.x / 2 + 0.1f, sr.bounds.size.y / 2 + 0.1f));
                 }
                 //TopLeft
-                if (gameObject.transform.position.y + sr.bounds.size.y + 0.25f / 2 < maxY && gameObject.transform.position.x - sr.bounds.size.y / 2 -0.25f > 0) { 
-                    positions.Add(gameObject.transform.position + new Vector3(-sr.bounds.size.x / 2 -0.25f, sr.bounds.size.y / 2 + 0.25f)); 
+                if (gameObject.transform.position.y + sr.bounds.size.y + 0.1f / 2 < maxY && gameObject.transform.position.x - sr.bounds.size.y / 2 -0.1f > 0) { 
+                    positions.Add(gameObject.transform.position + new Vector3(-sr.bounds.size.x / 2 -0.1f, sr.bounds.size.y / 2 + 0.1f)); 
                 }
                 //BottomLeft
-                if (gameObject.transform.position.y - sr.bounds.size.y / 2 -0.25f > 0 && gameObject.transform.position.x - sr.bounds.size.x / 2 -0.25f > 0) {
-                    positions.Add(gameObject.transform.position + new Vector3(-sr.bounds.size.x / 2 -0.25f, -sr.bounds.size.y / 2 - 0.25f));
+                if (gameObject.transform.position.y - sr.bounds.size.y / 2 -0.1f > 0 && gameObject.transform.position.x - sr.bounds.size.x / 2 -0.1f > 0) {
+                    positions.Add(gameObject.transform.position + new Vector3(-sr.bounds.size.x / 2 -0.1f, -sr.bounds.size.y / 2 - 0.1f));
                 }
                 //BottomRight
-                if(gameObject.transform.position.y - sr.bounds.size.y / 2 -0.25f > 0 && gameObject.transform.position.x + sr.bounds.size.x / 2 +0.25f < maxX)
+                if(gameObject.transform.position.y - sr.bounds.size.y / 2 -0.1f > 0 && gameObject.transform.position.x + sr.bounds.size.x / 2 +0.1f < maxX)
                 {
-                    positions.Add(gameObject.transform.position + new Vector3(sr.bounds.size.x / 2 + 0.25f, -sr.bounds.size.y / 2 - 0.25f));
+                    positions.Add(gameObject.transform.position + new Vector3(sr.bounds.size.x / 2 + 0.1f, -sr.bounds.size.y / 2 - 0.1f));
                 }
                 for (int i = 0; i < 3; i++)
                 {
-                    int pick = Random.Range(0, positions.Count);
-                    Instantiate(gameObject, positions[pick], Quaternion.identity);
-                    positions.RemoveAt(pick);
+                    try
+                    {
+                        int pick = Random.Range(0, positions.Count - 1);
+                        if (pick < positions.Count)
+                        {
+                            Instantiate(gameObject, positions[pick], Quaternion.identity);
+                            positions.RemoveAt(pick);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+
+                    }
                 }
-            }
         }
         if(Vector2.Distance(CandleInformer.CandleLocation,gameObject.transform.position) < 4.5f)
         {
