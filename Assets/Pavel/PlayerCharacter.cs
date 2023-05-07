@@ -76,7 +76,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private static void HideDetails()
     {
-        uiPauseTime = 3f;
+        uiPauseTime = 0.3f;
         showingDetails = false;
             SceneManager.GetActiveScene().GetRootGameObjects()
                 .First(x => x.tag == "DetailCanvas").SetActive(false);
@@ -84,7 +84,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public static void ShowDetails(int id)
     {
-        uiPauseTime = 3f;
+        uiPauseTime = 0.3f;
         showingDetails = true;
         var o = SceneManager.GetActiveScene().GetRootGameObjects()
             .First(x => x.tag == "DetailCanvas");
@@ -166,7 +166,7 @@ public class PlayerCharacter : MonoBehaviour
                 {
                     c.SetParent(transform, true);
                     transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Grabbing;
-                    c.position += Vector3.back * 1;
+                    c.GetComponent<SpriteRenderer>().sortingOrder = 0;
                 }
             }
         }
@@ -190,7 +190,7 @@ public class PlayerCharacter : MonoBehaviour
                 c.SetParent(null, true);
             }
             
-            c.position -= Vector3.back*1;
+            c.GetComponent<SpriteRenderer>().sortingOrder = 10;
             transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Normal;
         }
     }
