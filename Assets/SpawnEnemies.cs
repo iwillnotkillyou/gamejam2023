@@ -63,19 +63,19 @@ public class SpawnEnemies : MonoBehaviour
                 spawnRate = speed[1];
                 //speed 2/4
                 //spawn 1 per
-                Spawn(20,1);
+                Spawn(15,1);
                 break;
             case 2:
                 spawnSpeed = speed[2];
-                Spawn(15, 2);
+                Spawn(10, 2);
                 break;
             case 3:
                 spawnSpeed = speed[3];
-                Spawn(10, 2);
+                Spawn(8, 2);
                 break;
             case 4:
                 spawnSpeed = speed[4];
-                Spawn(10, 5);
+                Spawn(8, 5);
                 break;
             default:
                 break;
