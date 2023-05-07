@@ -6,22 +6,20 @@ public class SpawnEnemies : MonoBehaviour
 {
     public static GameObject mainSpawner;
     public GameObject Death;
-    float maxX = 30;
-    float maxY = 20;
+    float maxX = ClueObject.Region.x;
+    float maxY = ClueObject.Region.y;
     int decayLevel = 0;
     [SerializeField]
     List<GameObject> demons;
     [SerializeField]
     List<float> speed;
     public float spawnSpeed;
-    GameObject Table;
     float timer = 0;
     float spawnTime = 0;
     private void Start()
     {
         mainSpawner = this.gameObject;
         gameObject.SetActive(false);
-        Table = GameObject.FindGameObjectsWithTag("Table")[0];
     }
     public void Decay()
     {
