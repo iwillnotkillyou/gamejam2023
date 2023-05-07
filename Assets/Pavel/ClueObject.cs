@@ -13,6 +13,10 @@ public class ClueObject : MonoBehaviour
 
     public void Start()
     {
+        spawns = spawnsBase;
+        recipes = recipesBase
+            .Select(x => (new HashSet<int> { x.Key.Item1, x.Key.Item2 },
+                x.Value)).ToList();
         if (ClueObjects is null)
         {
             ClueObjects = GetClueObjects();
@@ -67,7 +71,8 @@ public class ClueObject : MonoBehaviour
         };
 
     public static int level = 0;
-    public static Dictionary<int, int> spawns
+    
+    public static Dictionary<int, int> spawnsBase
         = new()
         {
             { 10, 1 },
@@ -79,6 +84,8 @@ public class ClueObject : MonoBehaviour
             { 23, 3 },
             { 21, 3 }
         };
+
+    public static Dictionary<int, int> spawns;
 
     public static Dictionary<(int, int), int> recipesBase
         = new()
@@ -93,9 +100,8 @@ public class ClueObject : MonoBehaviour
             { (11, 12), 4 }
         };
 
-    public static List<(HashSet<int>, int)> recipes = recipesBase
-        .Select(x => (new HashSet<int> { x.Key.Item1, x.Key.Item2 },
-            x.Value)).ToList();
+    public static List<(HashSet<int>, int)> recipes;
+    
 
     public static Vector2 Region = new(40, 30);
 
@@ -143,7 +149,7 @@ public class ClueObject : MonoBehaviour
 
     public static bool FinalCheck(int id1, int id2)
     {
-        if (id1 == 18)
+        if (id1 == 18 && (id2 == 35 || id2 == 36 || id2 == 37))
         {
             PlayerCharacter.ShowDetails(30+id2);
             PlayerCharacter.EndGame = true;
