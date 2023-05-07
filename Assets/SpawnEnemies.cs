@@ -19,6 +19,7 @@ public class SpawnEnemies : MonoBehaviour
     float spawnTime = 0;
     private void Awake()
     {
+        mainSpawner = this.gameObject;
         Table = GameObject.FindGameObjectsWithTag("Table")[0];
         maxX = Table.GetComponent<SpriteRenderer>().bounds.size.x;
         maxY = Table.GetComponent<SpriteRenderer>().bounds.size.y;
