@@ -53,11 +53,24 @@ public class Lighter : MonoBehaviour, ILightObject
             if (brokenHits > 0)
             {
                 brokenHits--;
+                transform.GetChild(1).GetComponent<ParticleSystem>().Play();
                 //sound effect and spark effect
             }
         }
 
-        if (buffCD < 0)
+        if (brokenHits > 0)
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(2).gameObject
+                .GetComponent<Light2D>().intensity = 0.1f;
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+        }
+
+        if (buffCD < 0 && brokenHits < 0)
         {
             transform.GetChild(2).gameObject
                 .GetComponent<Light2D>().intensity = 1f;

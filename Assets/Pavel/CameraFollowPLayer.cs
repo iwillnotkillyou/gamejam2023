@@ -11,8 +11,8 @@ public class CameraFollowPLayer : MonoBehaviour
     public void Update()
     {
         var target
-            = Player.transform.position + Vector3.left*1.8f;
-        var direction = (target - transform.position).normalized;
+            = Player.transform.position + Vector3.left*2.5f;
+        var direction = (target - transform.position);
         var rigidbody = GetComponent<Rigidbody2D>();
         if (direction.magnitude > 0)
         {

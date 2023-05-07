@@ -104,27 +104,26 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (showingDetails)
-            {
-                HideDetails();
-                Time.timeScale = 1f;
-            }
-            else
+            if (!showingDetails)
             {
                 ShowDetails(-1);
                 Time.timeScale = 0f;
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) &&
-            (transform.childCount > 0))
+        if (Input.anyKeyDown)
         {
             if (showingDetails)
             {
                 HideDetails();
                 Time.timeScale = 1f;
             }
-            else
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) &&
+            (transform.childCount > 0))
+        {
+            if (!showingDetails)
             {
                 ShowDetails(transform.GetChild(0)
                     .GetComponent<ClueObject>().ID);

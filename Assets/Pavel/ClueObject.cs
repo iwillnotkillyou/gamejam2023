@@ -9,7 +9,7 @@ public class ClueObject : MonoBehaviour
     
     public static List<GameObject> ClueObjects = null;
 
-    public static List<int> DontDeactivate = new(){2,10};
+    public static List<int> DontDeactivate = new(){2};
 
     public void Start()
     {
@@ -48,7 +48,7 @@ public class ClueObject : MonoBehaviour
     public static Dictionary<int, int> spawns
         = new()
         {
-            { 18, 1 },
+            { 10, 1 },
             { 16, 1 },
             { 17, 1 },
             { 7, 2 },
@@ -60,8 +60,9 @@ public class ClueObject : MonoBehaviour
     public static Dictionary<(int, int), int> recipesBase
         = new()
         {
+            { (4, 2), 18 },
             { (5, 6), 2 },
-            { (18, 17), 9 },
+            { (10, 17), 9 },
             { (9, 8), 7 },
             { (7, 13), 3 },
             { (15, 16), 14 },
@@ -87,6 +88,7 @@ public class ClueObject : MonoBehaviour
     {
         if (DontDeactivate is not null && DontDeactivate.Contains(id))
         {
+            print(id);
             return;
         }
         
@@ -118,18 +120,40 @@ public class ClueObject : MonoBehaviour
 
     public static bool FinalCheck(int id1, int id2)
     {
-        if (id1 == 30)
+        if (id1 == 18)
         {
-            PlayerCharacter.ShowDetails(30+id2);
+            PlayerCharacter.ShowDetails(40+id2);
             return true;
         }
 
         return false;
     }
 
+    public static void TriggerFinal()
+    {
+        foreach (var o in ClueObjects)
+        {
+            if (o.GetComponent<ClueObject>().ID != 18)
+            {
+                o.SetActive(false);
+            }
+        }
+
+        List<int> KeyIds = new List<int>();
+        foreach (var keyId in KeyIds)
+        {
+            Activate(keyId);
+        }
+    }
+
     public static void MakeCreated(int id1, int id2)
     {
         var hs = new HashSet<int> { id1, id2 };
+        if (hs.Contains(18) && hs.Contains(3))
+        {
+            TriggerFinal();
+        }
+        
         if (hs.Contains(6))
         {
             Camera.main.transform.GetChild(0).GetComponent<Lighter>().TurnIntoLighter();
