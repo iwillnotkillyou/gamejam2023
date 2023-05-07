@@ -21,6 +21,9 @@ public class CommentController : MonoBehaviour
         {
             GetComponent<TextMeshProUGUI>().text = Comments[Ids.FindIndex(x => x == id)];
         }
-        GetComponent<TextMeshProUGUI>().text = "";
+        else
+        {
+            GetComponent<TextMeshProUGUI>().text = "";
+        }
     }
 }

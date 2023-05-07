@@ -10,7 +10,7 @@ public class Enemy_movement : MonoBehaviour
     Vector2 PositionOfMovement = new Vector2(0, 0);
     Vector2 playerPosition;
     public GameObject Death;
-    private void Awake()
+    private void Start()
     {
         PositionOfMovement = new Vector2(Random.Range(0, ClueObject.Region.x), Random.Range(0, ClueObject.Region.y));
     }

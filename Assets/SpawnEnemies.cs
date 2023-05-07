@@ -17,7 +17,7 @@ public class SpawnEnemies : MonoBehaviour
     GameObject Table;
     float timer = 0;
     float spawnTime = 0;
-    private void Awake()
+    private void Start()
     {
         mainSpawner = this.gameObject;
         gameObject.SetActive(false);
@@ -51,18 +51,18 @@ public class SpawnEnemies : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        float spawnSpeed = 0;
+        float spawnRate = 0;
         timer += Time.fixedDeltaTime * 1;
         switch (decayLevel)
         {
             case 0:
-                spawnSpeed = speed[0];
+                spawnRate = speed[0];
                 //speed 1/4
                 //spawn 1 per 4-6 seconds
                 Spawn(100,1);
                 break;
             case 1:
-                spawnSpeed = speed[1];
+                spawnRate = speed[1];
                 //speed 2/4
                 //spawn 1 per
                 Spawn(20,1);
