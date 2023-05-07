@@ -30,7 +30,7 @@ public class SpawnEnemies : MonoBehaviour
             timer = 0;
             for (int i = 0; i < SpawnAmount; i++) {
                 GameObject newBorn = Instantiate(basicDemon, pos, Quaternion.identity);
-                newBorn.GetComponent<Enemy_movement>().speed = spawnSpeed;
+                //newBorn.GetComponent<Enemy_movement>().speed = spawnSpeed;
             }
         }
     }

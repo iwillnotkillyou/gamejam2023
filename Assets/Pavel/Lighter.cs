@@ -77,7 +77,6 @@ public class Lighter : MonoBehaviour, ILightObject
     public float Range => YeetRadius;
     public bool Effects()
     {
-        var lDir = (Pos - transform.position);
-        return (lDir.magnitude < Range) && Yeet;
+        return buffDuration > 0;
     }
 }
