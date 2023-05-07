@@ -74,7 +74,7 @@ public class Enemy_movement : MonoBehaviour
         {
             Scare();
         }
-        else if (Vector2.Distance(Lighter.mainLighter.gameObject.transform.position,Position) < 1 && !lighted)
+        else if (Vector2.Distance(Lighter.mainLighter.gameObject.transform.position,Position) < 0.001f && !lighted)
         {
             CandleInformer.DamagePlayer(0.05f);
             Die();
