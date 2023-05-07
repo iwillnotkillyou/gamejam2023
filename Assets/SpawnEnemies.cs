@@ -5,12 +5,12 @@ using UnityEngine;
 public class SpawnEnemies : MonoBehaviour
 {
     [SerializeField]
-    float maxX = 0;
+    float maxX = 30;
     [SerializeField]
-    float maxY = 0;
+    float maxY = 20;
     int decayLevel = 0;
     [SerializeField]
-    GameObject basicDemon;
+    List<GameObject> demons;
     [SerializeField]
     List<float> speed;
     public float spawnSpeed;
@@ -25,13 +25,16 @@ public class SpawnEnemies : MonoBehaviour
         Vector2 playerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //find player
         Vector3 pos;
-        while (Vector3.Distance(pos = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY)), playerPosition) < 2) { }
+        while (Vector3.Distance(pos = new Vector2(Random.Range(0, maxX), Random.Range(0, maxY)), playerPosition) < 2) { }
         if (SpawnRate <= timer)
         {
             timer = 0;
             for (int i = 0; i < SpawnAmount; i++) {
-                GameObject newBorn = Instantiate(basicDemon, pos, Quaternion.identity);
-                newBorn.GetComponent<Enemy_movement>().speed = spawnSpeed;
+                if(Random.Range(0,100) > 85) { GameObject newBorn = Instantiate(demons[0], pos, Quaternion.identity); } 
+                else {
+                    GameObject newBorn = Instantiate(demons[1], pos, Quaternion.identity);
+                    newBorn.GetComponent<Enemy_movement>().speed = spawnSpeed;
+                }
             }
         }
     }
