@@ -45,7 +45,7 @@ public class PlayerCharacter : MonoBehaviour
             .Where(x => x != null).ToList();
         print(currentCollisions1.Count);
         var currentCollisions = currentCollisions1
-            .Where(x => x.Distance(col).distance < 0.1)
+            .Where(x => x.Distance(col).distance < 0.01)
             .Select(x => x.gameObject).Where(x =>
                 x.GetComponent<ClueObject>() is not null).ToList();
         return currentCollisions;
@@ -59,7 +59,7 @@ public class PlayerCharacter : MonoBehaviour
             .Where(x => x != null).ToList();
         var currentCollisions = currentCollisions1
             .Where(x =>
-                x.Distance(GetComponent<Collider2D>()).distance < 0.1)
+                x.Distance(GetComponent<Collider2D>()).distance < 0.01)
             .Select(x => x.gameObject).Where(x =>
                 x.GetComponent<ClueObject>() is not null).ToList();
         return currentCollisions;
