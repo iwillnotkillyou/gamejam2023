@@ -74,9 +74,15 @@ public class Enemy_movement : MonoBehaviour
         {
             Scare();
         }
+        else if (Vector2.Distance(Lighter.mainLighter.gameObject.transform.position,Position) < 1 && !lighted)
+        {
+            CandleInformer.DamagePlayer(0.05f);
+            Die();
+        }
+
         if (Vector2.Distance(Position, CandleInformer.CandleLocation) < 3)
         {
-            lifeTime -= 5 * Time.fixedDeltaTime;
+            lifeTime -= 10 * Time.fixedDeltaTime;
         }
         else if(Vector2.Distance(Position,CandleInformer.CandleLocation) < 5) {
             Scare();

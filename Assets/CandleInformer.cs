@@ -8,9 +8,9 @@ public class CandleInformer : MonoBehaviour
 
     public static void DamagePlayer(float dmg)
     {
-        if (playerLife < MaxLife * 0.1f)
+        if (playerLife > MaxLife * 0.1f)
         {
-            playerLife -= dmg;
+            playerLife -= MaxLife * dmg;
         }
         else
         {
