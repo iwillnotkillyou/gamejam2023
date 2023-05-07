@@ -67,6 +67,12 @@ public class PlayerCharacter : MonoBehaviour
     
     public static bool EndGame = false;
 
+    public static void Die()
+    {
+        ShowDetails(-2);
+        EndGame = true;
+    }
+
     private static void HideDetails()
     {
         showingDetails = false;
@@ -101,8 +107,17 @@ public class PlayerCharacter : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
+        print(showingDetails);
+        if (Input.anyKeyDown && showingDetails)
+        {
+            print("unpaused");
+            HideDetails();
+            Time.timeScale = 1f;
+            return;
+        }
+        
         if (Input.GetKeyDown(KeyCode.P) && !showingDetails)
         {
             print("paused");
@@ -117,16 +132,10 @@ public class PlayerCharacter : MonoBehaviour
                     .GetComponent<ClueObject>().ID);
             Time.timeScale = 0f;
         }
-        else if (Input.anyKeyDown && showingDetails)
-        {
-            print("unpaused");
-            HideDetails();
-            Time.timeScale = 1f;
-        }
     }
 
     // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         if (Input.GetMouseButtonDown(0) &&
             (transform.childCount == 0))
@@ -179,7 +188,7 @@ public class PlayerCharacter : MonoBehaviour
         if (direction.magnitude > 0)
         {
             //rigidbody.AddForce(rigidbody.mass * (0.1f * direction));
-            rigidbody.velocity = 10 * direction.normalized;
+            rigidbody.velocity = (10-ClueObject.level/2) * direction.normalized;
             Debug.DrawRay(transform.position, direction, Color.white);
         }
         else

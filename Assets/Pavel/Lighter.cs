@@ -27,6 +27,7 @@ public class Lighter : MonoBehaviour, ILightObject
         active = true;
         GetComponent<SpriteRenderer>().sprite = LighterSprite;
         transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
         transform.GetChild(2).gameObject.SetActive(true);
     }
 
@@ -37,7 +38,7 @@ public class Lighter : MonoBehaviour, ILightObject
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!active)
         {
@@ -54,10 +55,11 @@ public class Lighter : MonoBehaviour, ILightObject
                 transform.GetChild(2).gameObject
                     .GetComponent<Light2D>().intensity = 2;
                 buffDuration = 2f;
-                buffCD = 5f;
+                buffCD = 8f;
+                brokenHits = Mathf.Max(0,Random.Range(0, 10) - 3);
             }
 
-            if (brokenHits > 0)
+            if (brokenHits > 0 && buffDuration < 0)
             {
                 brokenHits--;
                 transform.GetChild(1).GetComponent<ParticleSystem>().Play();
@@ -65,33 +67,35 @@ public class Lighter : MonoBehaviour, ILightObject
             }
         }
 
-        if (brokenHits > 0)
-        {
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(2).gameObject
-                .GetComponent<Light2D>().intensity = 0.1f;
-        }
-        else
-        {
-            transform.GetChild(0).gameObject.SetActive(true);
-            transform.GetChild(0).GetComponent<ParticleSystem>().Play();
-        }
-
-        if (buffCD < 0 && brokenHits < 0)
-        {
-            transform.GetChild(2).gameObject
-                .GetComponent<Light2D>().intensity = 1f;
-        }
-
         if (buffDuration > 0)
         {
             buffDuration -= Time.deltaTime;
+            transform.GetChild(0).gameObject.SetActive(false);
+            if (!transform.GetChild(3).gameObject.activeInHierarchy)
+            {
+                transform.GetChild(3).gameObject.SetActive(true);
+            }
         }
-        else if (buffDuration <= 0)
+        
+        if (buffDuration < 0 && brokenHits <= 0)
         {
+            transform.GetChild(3).gameObject.SetActive(false);
+            print("c");
+            if (!transform.GetChild(0).gameObject.activeInHierarchy)
+            {
+                transform.GetChild(0).gameObject.SetActive(true);
+            }
+
+            transform.GetChild(2).gameObject.GetComponent<Light2D>()
+                .intensity = buffCD > 0 ? 0.5f : 1f;
+        }
+
+        if (buffDuration < 0 && brokenHits > 0)
+        {
+            transform.GetChild(3).gameObject.SetActive(false);
+            transform.GetChild(0).gameObject.SetActive(false);
             transform.GetChild(2).gameObject
-                .GetComponent<Light2D>().intensity = 0.5f;
-            brokenHits = Mathf.Max(0,Random.Range(0, 10) - 5);
+                .GetComponent<Light2D>().intensity = 0.1f;
         }
     }
 

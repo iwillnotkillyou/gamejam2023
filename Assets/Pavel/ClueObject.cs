@@ -44,6 +44,27 @@ public class ClueObject : MonoBehaviour
         return r;
     }
 
+    public static Dictionary<int, int> spawns1
+        = new()
+        {
+            { 19, 3 },
+            { 23, 3 },
+            { 21, 3 }
+        };
+
+    public static Dictionary<(int, int), int> recipesBase1
+        = new()
+        {
+            { (4, 2), 18 },
+            { (5, 6), 2 },
+            { (10, 17), 9 },
+            { (9, 8), 7 },
+            { (7, 13), 3 },
+            { (15, 16), 14 },
+            { (14, 2), 13 },
+            { (11, 12), 4 }
+        };
+
     public static int level = 0;
     public static Dictionary<int, int> spawns
         = new()
@@ -51,7 +72,6 @@ public class ClueObject : MonoBehaviour
             { 10, 1 },
             { 16, 1 },
             { 17, 1 },
-            { 7, 2 },
             { 8, 2 },
             { 15, 2 },
             { 12, 3 }
@@ -122,7 +142,8 @@ public class ClueObject : MonoBehaviour
     {
         if (id1 == 18)
         {
-            PlayerCharacter.ShowDetails(40+id2);
+            PlayerCharacter.ShowDetails(30+id2);
+            PlayerCharacter.EndGame = true;
             return true;
         }
 
@@ -138,9 +159,8 @@ public class ClueObject : MonoBehaviour
                 o.SetActive(false);
             }
         }
-
-        List<int> KeyIds = new List<int>();
-        foreach (var keyId in KeyIds)
+        
+        for (int keyId = 30; keyId <= 37; keyId++)
         {
             Activate(keyId);
         }
@@ -182,6 +202,10 @@ public class ClueObject : MonoBehaviour
         //play success sound
         //play appearing sound
         level++;
+        if (level % 2 == 0)
+        {
+            SpawnEnemies.mainSpawner.GetComponent<SpawnEnemies>().Decay();
+        }
         var r = vs.First();
         recipes.RemoveAt(r.ind);
         Activate(r.x.Item2, GameObject.FindGameObjectWithTag("Player").transform.position);
