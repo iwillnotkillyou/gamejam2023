@@ -37,7 +37,7 @@ public class Enemy_movement : MonoBehaviour
     {
         lifeTime -= Time.deltaTime * 2;
         speed = 7.5f;
-        PositionOfMovement = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        PositionOfMovement = Lighter.mainLighter.transform.position;
         sAttacktime += Time.deltaTime * 1;
         if(sAttacktime >= Random.Range(5,20))
         {
@@ -93,7 +93,7 @@ public class Enemy_movement : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        playerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        playerPosition = Lighter.mainLighter.transform.position;
         if (!Passive) {
             AttackThePlayer();
         }
