@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    private static bool showingDetails = false;
+    private static bool showingDetails;
 
     public Sprite Grabbing;
     public Sprite Normal;
@@ -65,7 +65,7 @@ public class PlayerCharacter : MonoBehaviour
         return currentCollisions;
     }
     
-    public static bool EndGame = false;
+    public static bool EndGame;
 
     public static void Die()
     {
@@ -77,15 +77,8 @@ public class PlayerCharacter : MonoBehaviour
     {
         uiPauseTime = 3f;
         showingDetails = false;
-        if (!EndGame)
-        {
             SceneManager.GetActiveScene().GetRootGameObjects()
                 .First(x => x.tag == "DetailCanvas").SetActive(false);
-        }
-        else
-        {
-            Application.Quit();
-        }
     }
 
     public static void ShowDetails(int id)
@@ -105,8 +98,12 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Start()
     {
+        showingDetails = false;
+        done = false;
+        EndGame = false;
         ShowDetails(-1);
         Time.timeScale = 0f;
+        uiPauseTime = 0f;
     }
 
     private static float uiPauseTime = 0f;
@@ -117,7 +114,18 @@ public class PlayerCharacter : MonoBehaviour
             uiPauseTime -= Time.unscaledDeltaTime;
             return;
         }
-        if (Input.anyKeyDown && showingDetails)
+
+        if (EndGame)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
+            return;
+        }
+        
+        if (!EndGame && Input.anyKeyDown && showingDetails)
         {
             print("unpaused");
             HideDetails();

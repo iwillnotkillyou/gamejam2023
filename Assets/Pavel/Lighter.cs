@@ -32,8 +32,13 @@ public class Lighter : MonoBehaviour, ILightObject
     }
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
+        buffDuration = 0;
+        buffCD = 0;
+        brokenHits = 0;
+        YeetRadius = 1;
+        active = false;
         mainLighter = gameObject;
     }
 
