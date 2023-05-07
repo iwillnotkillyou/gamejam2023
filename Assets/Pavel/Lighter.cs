@@ -19,9 +19,12 @@ public class Lighter : MonoBehaviour, ILightObject
     private int brokenHits = 0;
     public bool Yeet;
     public float YeetRadius = 1;
+    public bool active = false;
+
 
     public void TurnIntoLighter()
     {
+        active = true;
         GetComponent<SpriteRenderer>().sprite = LighterSprite;
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(2).gameObject.SetActive(true);
@@ -36,6 +39,10 @@ public class Lighter : MonoBehaviour, ILightObject
     // Update is called once per frame
     void Update()
     {
+        if (!active)
+        {
+            return;
+        }
 
         buffCD -= Time.deltaTime;
 

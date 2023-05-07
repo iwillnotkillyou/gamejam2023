@@ -69,6 +69,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private static void HideDetails()
     {
+        showingDetails = false;
         if (!EndGame)
         {
             SceneManager.GetActiveScene().GetRootGameObjects()
@@ -102,33 +103,25 @@ public class PlayerCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && !showingDetails)
         {
-            if (!showingDetails)
-            {
-                ShowDetails(-1);
-                Time.timeScale = 0f;
-            }
+            print("paused");
+            ShowDetails(-1);
+            Time.timeScale = 0f;
         }
-
-        if (Input.anyKeyDown)
+        else if (Input.GetKeyDown(KeyCode.Space) &&
+                 (transform.childCount > 0) && !showingDetails)
         {
-            if (showingDetails)
-            {
-                HideDetails();
-                Time.timeScale = 1f;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) &&
-            (transform.childCount > 0))
-        {
-            if (!showingDetails)
-            {
-                ShowDetails(transform.GetChild(0)
+            print("details");
+            ShowDetails(transform.GetChild(0)
                     .GetComponent<ClueObject>().ID);
-                Time.timeScale = 0f;
-            }
+            Time.timeScale = 0f;
+        }
+        else if (Input.anyKeyDown && showingDetails)
+        {
+            print("unpaused");
+            HideDetails();
+            Time.timeScale = 1f;
         }
     }
 

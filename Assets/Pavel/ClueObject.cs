@@ -156,6 +156,7 @@ public class ClueObject : MonoBehaviour
         
         if (hs.Contains(6))
         {
+            SpawnEnemies.mainSpawner.SetActive(true);
             Camera.main.transform.GetChild(0).GetComponent<Lighter>().TurnIntoLighter();
             GameObject.FindGameObjectWithTag("GlobalLight").SetActive(false);
         }

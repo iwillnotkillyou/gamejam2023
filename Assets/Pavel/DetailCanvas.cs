@@ -11,6 +11,6 @@ public class DetailCanvas : MonoBehaviour
     public List<Sprite> Details = new List<Sprite>();
     public void Show(int id)
     {
-        transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Details[Ids.FindIndex(x => x == id)];
+        GetComponent<SpriteRenderer>().sprite = Details[Ids.FindIndex(x => x == id)];
     }
 }

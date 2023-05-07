@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpawnEnemies : MonoBehaviour
 {
+    public static GameObject mainSpawner;
+
     [SerializeField]
     float maxX = 30;
     [SerializeField]
@@ -20,6 +22,13 @@ public class SpawnEnemies : MonoBehaviour
     {
         decayLevel++;
     }
+
+    public void Start()
+    {
+        mainSpawner = gameObject;
+        gameObject.SetActive(false);
+    }
+
     void Spawn(float SpawnRate,float SpawnAmount)
     {
         Vector2 playerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
