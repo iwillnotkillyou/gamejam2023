@@ -938,7 +938,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -6562,7 +6562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
       propertyPath: Ids.Array.size
-      value: 23
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
       propertyPath: Ids.Array.data[21]
@@ -6573,12 +6573,25 @@ PrefabInstance:
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
+      propertyPath: Ids.Array.data[23]
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
+      propertyPath: Ids.Array.data[24]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
       propertyPath: Comments.Array.size
-      value: 23
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
       propertyPath: Comments.Array.data[0]
       value: A relatively recent newspaper
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
+      propertyPath: Comments.Array.data[13]
+      value: "What is this? It\u2019s just a little blood\u2026 A small sacrifice
+        to make, if it brings my sister back. "
       objectReference: {fileID: 0}
     - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
       propertyPath: Comments.Array.data[21]
@@ -6586,7 +6599,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
       propertyPath: Comments.Array.data[22]
-      value: FInally
+      value: Finally
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
+      propertyPath: Comments.Array.data[23]
+      value: '#$%@*&#!$'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741723306528677841, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
+      propertyPath: Comments.Array.data[24]
+      value: I need to attack with the lighter to fix it
       objectReference: {fileID: 0}
     - target: {fileID: 7097965702323686957, guid: ffde779335cb3c24596064fc56dcb90d, type: 3}
       propertyPath: m_Name

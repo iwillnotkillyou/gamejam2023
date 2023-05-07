@@ -62,6 +62,10 @@ public class Lighter : MonoBehaviour, ILightObject
                 buffDuration = 2f;
                 buffCD = 8f;
                 brokenHits = Mathf.Max(0,Random.Range(0, 10) - 3);
+                if (brokenHits > 0)
+                {
+                    CommentController.main.Show(-3);
+                }
             }
 
             if (brokenHits > 0 && buffDuration < 0)

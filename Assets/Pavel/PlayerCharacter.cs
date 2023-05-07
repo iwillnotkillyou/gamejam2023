@@ -120,7 +120,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                Application.Quit();
             }
 
             return;
