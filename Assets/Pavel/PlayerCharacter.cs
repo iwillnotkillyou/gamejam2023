@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerCharacter : MonoBehaviour
 {
     private static bool showingDetails;
+    public static PlayerCharacter player;
 
     public Sprite Grabbing;
     public Sprite Normal;
@@ -95,6 +96,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Start()
     {
+        player = this;
         showingDetails = false;
         done = false;
         EndGame = false;
