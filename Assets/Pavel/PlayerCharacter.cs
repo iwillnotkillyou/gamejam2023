@@ -87,11 +87,8 @@ public class PlayerCharacter : MonoBehaviour
         showingDetails = true;
         var o = SceneManager.GetActiveScene().GetRootGameObjects()
             .First(x => x.tag == "DetailCanvas");
-        if (o.GetComponent<DetailCanvas>().Ids.Contains(id))
-        {
             o.SetActive(true);
             o.GetComponent<DetailCanvas>().Show(id);
-        }
     }
 
     private static bool done = false;
@@ -105,6 +102,8 @@ public class PlayerCharacter : MonoBehaviour
         Time.timeScale = 0f;
         uiPauseTime = 0f;
     }
+
+    private const int ec = 1;
 
     private static float uiPauseTime = 0f;
     private void Update()
@@ -140,10 +139,10 @@ public class PlayerCharacter : MonoBehaviour
             Time.timeScale = 0f;
         }
         else if (Input.GetKeyDown(KeyCode.Space) &&
-                 (transform.childCount > 0) && !showingDetails)
+                 (transform.childCount > ec) && !showingDetails)
         {
             print("details");
-            ShowDetails(transform.GetChild(0)
+            ShowDetails(transform.GetChild(ec)
                     .GetComponent<ClueObject>().ID);
             Time.timeScale = 0f;
         }
@@ -153,12 +152,14 @@ public class PlayerCharacter : MonoBehaviour
     private void FixedUpdate()
     {
         if (Input.GetMouseButtonDown(0) &&
-            (transform.childCount == 0))
+            (transform.childCount == ec))
         {
             var currentCollisions = GetCollisions();
             if (currentCollisions.Any())
             {
                 var c = currentCollisions.First().transform;
+                CommentController.main.Show(c.GetComponent<ClueObject>()
+                    .ID);
                 if (c.GetComponent<ClueObject>().ID == 10 && ClueObject.level >= 3)
                 {
                     c.gameObject.SetActive(false);
@@ -167,22 +168,22 @@ public class PlayerCharacter : MonoBehaviour
                 else
                 {
                     c.SetParent(transform, true);
-                    GetComponent<SpriteRenderer>().sprite = Grabbing;
+                    transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Grabbing;
                     c.position += Vector3.back * 1;
                 }
             }
         }
         else if (Input.GetMouseButtonDown(0) &&
-                 (transform.childCount > 0))
+                 (transform.childCount > ec))
         {
-            var c = transform.GetChild(0);
+            var c = transform.GetChild(ec);
             var cs = GetCollisions(c.GetComponent<Collider2D>())
                 .Where(x => x.transform != c);
             if (cs.Any())
             {
                 var fo = cs.First().gameObject;
                 var oId = fo.GetComponent<ClueObject>().ID;
-                var id = transform.GetChild(0)
+                var id = transform.GetChild(ec)
                     .GetComponent<ClueObject>().ID;
                 c.SetParent(null, true);
                 ClueObject.MakeCreated(oId, id);
@@ -191,9 +192,9 @@ public class PlayerCharacter : MonoBehaviour
             {
                 c.SetParent(null, true);
             }
-
+            
             c.position -= Vector3.back*1;
-            GetComponent<SpriteRenderer>().sprite = Normal;
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Normal;
         }
 
         var target

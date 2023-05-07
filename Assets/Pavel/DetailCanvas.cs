@@ -11,6 +11,13 @@ public class DetailCanvas : MonoBehaviour
     public List<Sprite> Details = new List<Sprite>();
     public void Show(int id)
     {
-        GetComponent<Image>().sprite = Details[Ids.FindIndex(x => x == id)];
+        if (Ids.Contains(id))
+        {
+            GetComponent<Image>().sprite = Details[Ids.FindIndex(x => x == id)];
+        }
+        else
+        {
+            GetComponent<Image>().sprite = ClueObject.ClueObjects.First(y => y.GetComponent<ClueObject>().ID == id).GetComponent<SpriteRenderer>().sprite;
+        }
     }
 }
