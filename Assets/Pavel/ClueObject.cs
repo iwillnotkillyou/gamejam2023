@@ -62,7 +62,8 @@ public class ClueObject : MonoBehaviour
             { (7, 13), 3 },
             { (15, 16), 14 },
             { (14, 2), 13 },
-            { (11, 12), 4 }
+            { (11, 12), 4 },
+            { (21, 23), 22 }
         };
 
     public static int level = 0;
@@ -74,7 +75,9 @@ public class ClueObject : MonoBehaviour
             { 17, 1 },
             { 8, 2 },
             { 15, 2 },
-            { 12, 3 }
+            { 12, 3 },
+            { 23, 3 },
+            { 21, 3 }
         };
 
     public static Dictionary<(int, int), int> recipesBase
@@ -180,7 +183,7 @@ public class ClueObject : MonoBehaviour
             Camera.main.transform.GetChild(0).GetComponent<Lighter>().TurnIntoLighter();
             GameObject.FindGameObjectWithTag("GlobalLight").SetActive(false);
         }
-
+        print(string.Join(",",hs.Select(x=>x.ToString())));
         var c1 = FinalCheck(id1, id2);
         var c2 = FinalCheck(id2, id1);
         if (c1 || c2)
@@ -189,7 +192,7 @@ public class ClueObject : MonoBehaviour
         }
 
         print(string.Join(",",recipes.Select(x=> string.Join(",",x.Item1.Select(x=>x.ToString()).Append(x.Item2.ToString())))));
-        print(string.Join(",",hs.Select(x=>x.ToString())));
+       
         var vs = recipes.Select((x, i) => (x, ind: i)).Where(x => x.Item1.Item1.SetEquals(hs))
             ;
         if (!vs.Any())

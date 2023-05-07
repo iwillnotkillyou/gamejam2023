@@ -45,7 +45,7 @@ public class Lighter : MonoBehaviour, ILightObject
             return;
         }
 
-        buffCD -= Time.deltaTime;
+        buffCD -= Time.fixedDeltaTime;
 
 
         if (Input.GetMouseButtonDown(1))
@@ -69,7 +69,7 @@ public class Lighter : MonoBehaviour, ILightObject
 
         if (buffDuration > 0)
         {
-            buffDuration -= Time.deltaTime;
+            buffDuration -= Time.fixedDeltaTime;
             transform.GetChild(0).gameObject.SetActive(false);
             if (!transform.GetChild(3).gameObject.activeInHierarchy)
             {
