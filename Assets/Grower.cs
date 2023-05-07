@@ -13,7 +13,7 @@ public class Grower : MonoBehaviour
     float maximumLifetime;
     public float speed = 0;
     public GameObject Death;
-    private void Awake()
+    private void Start()
     {
         if(GetEnemies(this.gameObject.GetComponent<Collider2D>()).Count > 0)
         {

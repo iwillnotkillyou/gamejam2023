@@ -18,7 +18,7 @@ public class CandleInformer : MonoBehaviour
         }
     }
     public static Vector2 CandleLocation;
-    private void Awake()
+    private void Start()
     {
         CandleLocation = transform.position;
         playerLife = MaxLife;

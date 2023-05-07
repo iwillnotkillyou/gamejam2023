@@ -17,7 +17,7 @@ public class SpawnEnemies : MonoBehaviour
     GameObject Table;
     float timer = 0;
     float spawnTime = 0;
-    private void Awake()
+    private void Start()
     {
         mainSpawner = this.gameObject;
         gameObject.SetActive(false);

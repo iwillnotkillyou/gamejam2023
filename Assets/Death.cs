@@ -8,7 +8,7 @@ public class Death : MonoBehaviour
     [SerializeField]
     GameObject dyingBalls;
     List<GameObject> List = new List<GameObject>();
-    private void Awake()
+    private void Start()
     {
 
         int number = Random.Range(4,10);
