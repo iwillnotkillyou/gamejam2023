@@ -57,7 +57,7 @@ public class SpawnEnemies : MonoBehaviour
     private void Update()
     {
         float spawnSpeed = 0;
-        timer += Time.deltaTime * 1;
+        timer += Time.fixedDeltaTime * 1;
         switch (decayLevel)
         {
             case 0:

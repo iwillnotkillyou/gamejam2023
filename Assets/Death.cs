@@ -25,7 +25,7 @@ public class Death : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        lifetime -= 0.25f * Time.deltaTime; 
+        lifetime -= 0.25f * Time.fixedDeltaTime; 
         foreach (var item in List)
         {
             Color tmp = item.gameObject.GetComponent<SpriteRenderer>().color;

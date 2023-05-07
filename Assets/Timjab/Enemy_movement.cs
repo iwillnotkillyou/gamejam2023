@@ -34,10 +34,10 @@ public class Enemy_movement : MonoBehaviour
     bool scalingMovement = false;
     void AttackThePlayer()
     {
-        lifeTime -= Time.deltaTime * 0.5f;
+        lifeTime -= Time.fixedDeltaTime * 0.5f;
         speed = 7.5f;
         PositionOfMovement = Lighter.mainLighter.transform.position;
-        sAttacktime += Time.deltaTime * 1;
+        sAttacktime += Time.fixedDeltaTime * 1;
         if(sAttacktime >= Random.Range(5,20))
         {
             sAttacktime = 0;
@@ -85,16 +85,16 @@ public class Enemy_movement : MonoBehaviour
         }
         if (lifeTime < 0)
         {
-            lifeTime -= Time.deltaTime * 1;
+            lifeTime -= Time.fixedDeltaTime * 1;
         }
         playerPosition = Lighter.mainLighter.transform.position;
         if (!Passive) {
             AttackThePlayer();
         }
         else {
-            lifeTime -= 0.25f * Time.deltaTime;
+            lifeTime -= 0.25f * Time.fixedDeltaTime;
             speed = 2;
-            timePassed += Time.deltaTime * 1;
+            timePassed += Time.fixedDeltaTime * 1;
             if(timePassed > Random.Range(2,6))
             {
                 lighted = false;
@@ -126,7 +126,7 @@ public class Enemy_movement : MonoBehaviour
     {
         if (scalingMovement) {
             Vector2 movementVector = PositionOfMovement - Position;
-            this.gameObject.GetComponent<Rigidbody2D>().velocity += speed * Time.deltaTime * movementVector.normalized;  
+            this.gameObject.GetComponent<Rigidbody2D>().velocity += speed * Time.fixedDeltaTime * movementVector.normalized;  
             
             if(exceeded)
             {
@@ -151,6 +151,6 @@ public class Enemy_movement : MonoBehaviour
     }
     void SlowDown()
     {
-            this.gameObject.GetComponent<Rigidbody2D>().velocity += -speed * Time.deltaTime * this.gameObject.GetComponent<Rigidbody2D>().velocity.normalized;
+            this.gameObject.GetComponent<Rigidbody2D>().velocity += -speed * Time.fixedDeltaTime * this.gameObject.GetComponent<Rigidbody2D>().velocity.normalized;
     }
 }

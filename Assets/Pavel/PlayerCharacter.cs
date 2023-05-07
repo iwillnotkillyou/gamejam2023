@@ -75,6 +75,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private static void HideDetails()
     {
+        uiPauseTime = 3f;
         showingDetails = false;
         if (!EndGame)
         {
@@ -89,6 +90,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public static void ShowDetails(int id)
     {
+        uiPauseTime = 3f;
         showingDetails = true;
         var o = SceneManager.GetActiveScene().GetRootGameObjects()
             .First(x => x.tag == "DetailCanvas");
@@ -107,9 +109,14 @@ public class PlayerCharacter : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    private static float uiPauseTime = 0f;
     private void Update()
     {
-        print(showingDetails);
+        if (uiPauseTime > 0)
+        {
+            uiPauseTime -= Time.unscaledDeltaTime;
+            return;
+        }
         if (Input.anyKeyDown && showingDetails)
         {
             print("unpaused");
