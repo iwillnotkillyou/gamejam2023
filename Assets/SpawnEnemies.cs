@@ -36,7 +36,6 @@ public class SpawnEnemies : MonoBehaviour
             timer = 0;
             for (int i = 0; i < SpawnAmount; i++) {
                 if(Random.Range(0,100) > 85) { GameObject newBorn = Instantiate(demons[0], pos, Quaternion.identity);
-                    newBorn.gameObject.GetComponent<Grower>().speed = spawnSpeed;
                     newBorn.gameObject.GetComponent<Grower>().Death = Death;
                 } 
                 else {

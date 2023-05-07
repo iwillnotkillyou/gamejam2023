@@ -11,7 +11,6 @@ public class Grower : MonoBehaviour
     bool grown = false;
     float lifeTime = 0;
     float maximumLifetime;
-    public float speed = 0;
     public GameObject Death;
     private void Start()
     {
@@ -32,7 +31,7 @@ public class Grower : MonoBehaviour
         this.gameObject.transform.localScale = new Vector3(1, 1, 1) * lifeTime / maximumLifetime;  
         if(lifeTime < maximumLifetime)
         {
-            lifeTime += speed * Time.fixedDeltaTime;
+            lifeTime += 1 * Time.fixedDeltaTime;
         }
         else
         {
