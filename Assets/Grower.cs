@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Grower : MonoBehaviour
 {
@@ -23,6 +24,12 @@ public class Grower : MonoBehaviour
     }
     private void FixedUpdate()
     {
+         if (Vector2.Distance(Lighter.mainLighter.gameObject.transform.position, this.gameObject.transform.position) < 0.001)
+        {
+            CandleInformer.DamagePlayer(0.10f);
+            Instantiate(Death, this.gameObject.transform.position, Quaternion.identity); Destroy(gameObject);
+
+        }
         this.gameObject.transform.localScale = new Vector3(1, 1, 1) * lifeTime / maximumLifetime;  
         if(lifeTime < maximumLifetime)
         {

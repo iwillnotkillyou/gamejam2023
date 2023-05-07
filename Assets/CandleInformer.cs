@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CandleInformer : MonoBehaviour
 {
-    public float MaxLife = 100;
+    public static float MaxLife = 1200;
     public static float playerLife = 100;
 
     public static void DamagePlayer(float dmg)
     {
-        playerLife -= dmg;
+        if (playerLife > MaxLife * 0.1f)
+        {
+            playerLife -= MaxLife * dmg;
+        }
+        else
+        {
+            PlayerCharacter.Die();
+        }
     }
     public static Vector2 CandleLocation;
     private void Awake()
@@ -19,7 +26,10 @@ public class CandleInformer : MonoBehaviour
     void Update()
     {
         CandleLocation = transform.position;
-        playerLife -= 1 * Time.fixedDeltaTime;
-        this.gameObject.transform.localScale = new Vector2(playerLife/MaxLife*0.2f,playerLife/MaxLife*0.2f);
+        if(playerLife > MaxLife * 0.1f)
+        {
+            playerLife -= 1 * Time.fixedDeltaTime;
+            this.gameObject.transform.localScale = new Vector2(playerLife / MaxLife * 0.2f, playerLife / MaxLife * 0.2f);
+        }
     }
 }

@@ -51,33 +51,33 @@ public class SpawnEnemies : MonoBehaviour
     }
     private void Update()
     {
-        float spawnSpeed = 0;
+        float spawnRate = 0;
         timer += Time.fixedDeltaTime * 1;
         switch (decayLevel)
         {
             case 0:
-                spawnSpeed = speed[0];
+                spawnRate = speed[0];
                 //speed 1/4
                 //spawn 1 per 4-6 seconds
-                Spawn(5,1);
+                Spawn(spawnRate,1);
                 break;
             case 1:
-                spawnSpeed = speed[1];
+                spawnRate = speed[1];
                 //speed 2/4
                 //spawn 1 per
-                Spawn(3.5f,1);
+                Spawn(spawnRate,1);
                 break;
             case 2:
-                spawnSpeed = speed[2];
-                Spawn(3.5f, 2);
+                spawnRate = speed[2];
+                Spawn(spawnRate, 2);
                 break;
             case 3:
-                spawnSpeed = speed[3];
-                Spawn(3f, 2);
+                spawnRate = speed[3];
+                Spawn(spawnRate, 2);
                 break;
             case 4:
-                spawnSpeed = speed[4];
-                Spawn(2, 3);
+                spawnRate = speed[4];
+                Spawn(spawnRate, 3);
                 break;
             default:
                 break;
