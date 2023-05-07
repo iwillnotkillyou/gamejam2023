@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CandleInformer : MonoBehaviour
 {
-    public float MaxLife = 100;
-    public static float playerLife = 100;
+    public const float MaxLife = 300;
+    public static float playerLife = MaxLife;
 
     public static void DamagePlayer(float dmg)
     {

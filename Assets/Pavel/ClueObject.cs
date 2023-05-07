@@ -169,6 +169,8 @@ public class ClueObject : MonoBehaviour
                 o.SetActive(false);
             }
         }
+
+        SpawnEnemies.mainSpawner.GetComponent<SpawnEnemies>().Decay();
         
         for (int keyId = 30; keyId <= 37; keyId++)
         {
@@ -212,7 +214,16 @@ public class ClueObject : MonoBehaviour
         //play success sound
         //play appearing sound
         level++;
-        if (level % 2 == 0)
+        print(level);
+        if (level == 4)
+        {
+            SpawnEnemies.mainSpawner.GetComponent<SpawnEnemies>().Decay();
+        }
+        if (level == 7)
+        {
+            SpawnEnemies.mainSpawner.GetComponent<SpawnEnemies>().Decay();
+        }
+        if (level == 10)
         {
             SpawnEnemies.mainSpawner.GetComponent<SpawnEnemies>().Decay();
         }

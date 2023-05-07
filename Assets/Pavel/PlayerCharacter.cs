@@ -146,12 +146,7 @@ public class PlayerCharacter : MonoBehaviour
                     .GetComponent<ClueObject>().ID);
             Time.timeScale = 0f;
         }
-    }
-
-    // Update is called once per frame
-    private void FixedUpdate()
-    {
-        if (Input.GetMouseButtonDown(0) &&
+        if (Time.timeScale > 0f && Input.GetMouseButtonDown(0) &&
             (transform.childCount == ec))
         {
             var currentCollisions = GetCollisions();
@@ -173,7 +168,7 @@ public class PlayerCharacter : MonoBehaviour
                 }
             }
         }
-        else if (Input.GetMouseButtonDown(0) &&
+        else if (Time.timeScale > 0f && Input.GetMouseButtonDown(0) &&
                  (transform.childCount > ec))
         {
             var c = transform.GetChild(ec);
@@ -196,6 +191,11 @@ public class PlayerCharacter : MonoBehaviour
             c.position -= Vector3.back*1;
             transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Normal;
         }
+    }
+
+    // Update is called once per frame
+    private void FixedUpdate()
+    {
 
         var target
             = Camera.main.ScreenToWorldPoint(Input.mousePosition);
