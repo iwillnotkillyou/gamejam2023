@@ -140,7 +140,7 @@ public class ClueObject : MonoBehaviour
         if (poss is null)
         {
             int i = 0;
-            while (PlayerCharacter.GetCollisions(o.GetComponent<Collider2D>()).Any() && o.GetComponent<Renderer>().isVisible && i < 50)
+            while ((PlayerCharacter.GetCollisions(o.GetComponent<Collider2D>()).Any() || o.GetComponent<Renderer>().isVisible) && i < 50)
             {
                 o.transform.position = new Vector2(Random.Range(0, Region.x), Random.Range(0, Region.y));
                 i++;
