@@ -67,8 +67,15 @@ public class PlayerCharacter : MonoBehaviour
     
     public static bool EndGame = false;
 
+    public static void Die()
+    {
+        ShowDetails(-2);
+        EndGame = true;
+    }
+
     private static void HideDetails()
     {
+        showingDetails = false;
         if (!EndGame)
         {
             SceneManager.GetActiveScene().GetRootGameObjects()
@@ -100,41 +107,35 @@ public class PlayerCharacter : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        print(showingDetails);
+        if (Input.anyKeyDown && showingDetails)
         {
-            if (showingDetails)
-            {
-                HideDetails();
-                Time.timeScale = 1f;
-            }
-            else
-            {
-                ShowDetails(-1);
-                Time.timeScale = 0f;
-            }
+            print("unpaused");
+            HideDetails();
+            Time.timeScale = 1f;
+            return;
         }
-
-        if (Input.GetKeyDown(KeyCode.Space) &&
-            (transform.childCount > 0))
+        
+        if (Input.GetKeyDown(KeyCode.P) && !showingDetails)
         {
-            if (showingDetails)
-            {
-                HideDetails();
-                Time.timeScale = 1f;
-            }
-            else
-            {
-                ShowDetails(transform.GetChild(0)
+            print("paused");
+            ShowDetails(-1);
+            Time.timeScale = 0f;
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) &&
+                 (transform.childCount > 0) && !showingDetails)
+        {
+            print("details");
+            ShowDetails(transform.GetChild(0)
                     .GetComponent<ClueObject>().ID);
-                Time.timeScale = 0f;
-            }
+            Time.timeScale = 0f;
         }
     }
 
     // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         if (Input.GetMouseButtonDown(0) &&
             (transform.childCount == 0))
@@ -187,7 +188,7 @@ public class PlayerCharacter : MonoBehaviour
         if (direction.magnitude > 0)
         {
             //rigidbody.AddForce(rigidbody.mass * (0.1f * direction));
-            rigidbody.velocity = 10 * direction.normalized;
+            rigidbody.velocity = (10-ClueObject.level/2) * direction.normalized;
             Debug.DrawRay(transform.position, direction, Color.white);
         }
         else

@@ -9,7 +9,7 @@ public class ClueObject : MonoBehaviour
     
     public static List<GameObject> ClueObjects = null;
 
-    public static List<int> DontDeactivate = new(){2,10};
+    public static List<int> DontDeactivate = new(){2};
 
     public void Start()
     {
@@ -44,14 +44,34 @@ public class ClueObject : MonoBehaviour
         return r;
     }
 
+    public static Dictionary<int, int> spawns1
+        = new()
+        {
+            { 19, 3 },
+            { 23, 3 },
+            { 21, 3 }
+        };
+
+    public static Dictionary<(int, int), int> recipesBase1
+        = new()
+        {
+            { (4, 2), 18 },
+            { (5, 6), 2 },
+            { (10, 17), 9 },
+            { (9, 8), 7 },
+            { (7, 13), 3 },
+            { (15, 16), 14 },
+            { (14, 2), 13 },
+            { (11, 12), 4 }
+        };
+
     public static int level = 0;
     public static Dictionary<int, int> spawns
         = new()
         {
-            { 18, 1 },
+            { 10, 1 },
             { 16, 1 },
             { 17, 1 },
-            { 7, 2 },
             { 8, 2 },
             { 15, 2 },
             { 12, 3 }
@@ -60,8 +80,9 @@ public class ClueObject : MonoBehaviour
     public static Dictionary<(int, int), int> recipesBase
         = new()
         {
+            { (4, 2), 18 },
             { (5, 6), 2 },
-            { (18, 17), 9 },
+            { (10, 17), 9 },
             { (9, 8), 7 },
             { (7, 13), 3 },
             { (15, 16), 14 },
@@ -87,6 +108,7 @@ public class ClueObject : MonoBehaviour
     {
         if (DontDeactivate is not null && DontDeactivate.Contains(id))
         {
+            print(id);
             return;
         }
         
@@ -118,20 +140,43 @@ public class ClueObject : MonoBehaviour
 
     public static bool FinalCheck(int id1, int id2)
     {
-        if (id1 == 30)
+        if (id1 == 18)
         {
             PlayerCharacter.ShowDetails(30+id2);
+            PlayerCharacter.EndGame = true;
             return true;
         }
 
         return false;
     }
 
+    public static void TriggerFinal()
+    {
+        foreach (var o in ClueObjects)
+        {
+            if (o.GetComponent<ClueObject>().ID != 18)
+            {
+                o.SetActive(false);
+            }
+        }
+        
+        for (int keyId = 30; keyId <= 37; keyId++)
+        {
+            Activate(keyId);
+        }
+    }
+
     public static void MakeCreated(int id1, int id2)
     {
         var hs = new HashSet<int> { id1, id2 };
+        if (hs.Contains(18) && hs.Contains(3))
+        {
+            TriggerFinal();
+        }
+        
         if (hs.Contains(6))
         {
+            SpawnEnemies.mainSpawner.SetActive(true);
             Camera.main.transform.GetChild(0).GetComponent<Lighter>().TurnIntoLighter();
             GameObject.FindGameObjectWithTag("GlobalLight").SetActive(false);
         }
@@ -157,6 +202,10 @@ public class ClueObject : MonoBehaviour
         //play success sound
         //play appearing sound
         level++;
+        if (level % 2 == 0)
+        {
+            SpawnEnemies.mainSpawner.GetComponent<SpawnEnemies>().Decay();
+        }
         var r = vs.First();
         recipes.RemoveAt(r.ind);
         Activate(r.x.Item2, GameObject.FindGameObjectWithTag("Player").transform.position);
