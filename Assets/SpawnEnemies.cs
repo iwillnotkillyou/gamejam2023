@@ -22,8 +22,6 @@ public class SpawnEnemies : MonoBehaviour
         mainSpawner = this.gameObject;
         gameObject.SetActive(false);
         Table = GameObject.FindGameObjectsWithTag("Table")[0];
-        maxX = Table.GetComponent<SpriteRenderer>().bounds.size.x;
-        maxY = Table.GetComponent<SpriteRenderer>().bounds.size.y;
     }
     public void Decay()
     {
@@ -41,15 +39,11 @@ public class SpawnEnemies : MonoBehaviour
             for (int i = 0; i < SpawnAmount; i++) {
                 if(Random.Range(0,100) > 85) { GameObject newBorn = Instantiate(demons[0], pos, Quaternion.identity);
                     newBorn.gameObject.GetComponent<Grower>().speed = spawnSpeed;
-                    newBorn.gameObject.GetComponent<Grower>().maxX = maxX;
-                    newBorn.gameObject.GetComponent<Grower>().maxY = maxY;
                     newBorn.gameObject.GetComponent<Grower>().Death = Death;
                 } 
                 else {
                     GameObject newBorn = Instantiate(demons[1], pos, Quaternion.identity);
                     newBorn.GetComponent<Enemy_movement>().speed = spawnSpeed;
-                    newBorn.gameObject.GetComponent<Enemy_movement>().maxX = maxX;
-                    newBorn.gameObject.GetComponent<Enemy_movement>().maxY = maxY;
                     newBorn.gameObject.GetComponent<Enemy_movement>().Death = Death;
                 }
             }

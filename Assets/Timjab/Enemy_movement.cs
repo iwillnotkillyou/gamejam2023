@@ -9,12 +9,10 @@ public class Enemy_movement : MonoBehaviour
     public ILightObject Lighter_;
     Vector2 PositionOfMovement = new Vector2(0, 0);
     Vector2 playerPosition;
-    public float maxX = 10;
-    public float maxY = 4.5f;
     public GameObject Death;
     private void Awake()
     {
-        PositionOfMovement = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
+        PositionOfMovement = new Vector2(Random.Range(0, ClueObject.Region.x), Random.Range(0, ClueObject.Region.y));
     }
     bool exceeded = false;
     bool moving = true;
@@ -104,7 +102,7 @@ public class Enemy_movement : MonoBehaviour
                 }
                 else if (Vector2.Distance(Position, PositionOfMovement) < 0.5)
                 {
-                    PositionOfMovement = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
+                    PositionOfMovement = new Vector2(Random.Range(0, ClueObject.Region.x), Random.Range(0, ClueObject.Region.y));
                     if(probability < 0.25f)
                     {
                         Multiplicate();

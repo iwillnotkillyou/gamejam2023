@@ -20,6 +20,6 @@ public class CandleInformer : MonoBehaviour
     {
         CandleLocation = transform.position;
         playerLife -= 1 * Time.fixedDeltaTime;
-        this.gameObject.transform.localScale = new Vector2(playerLife/MaxLife,playerLife/MaxLife);
+        this.gameObject.transform.localScale = new Vector2(playerLife/MaxLife*0.2f,playerLife/MaxLife*0.2f);
     }
 }
